@@ -5,10 +5,15 @@
  */
 package javaapplication8;
 
+import admin.adminDashboard;
+import config.dbConnector;
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,18 +27,36 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
         
-        Icon i = lock.getIcon();
-        ImageIcon icon = (ImageIcon)i;
-        Image image = icon.getImage().getScaledInstance(lock.getWidth(), lock.getHeight(), Image.SCALE_SMOOTH);
-        lock.setIcon(new ImageIcon(image));
-        
-        Icon i1 = juser.getIcon();
+        Icon i1 = lock.getIcon();
         ImageIcon icon1 = (ImageIcon)i1;
-        Image image1 = icon1.getImage().getScaledInstance(juser.getWidth(), juser.getHeight(), Image.SCALE_SMOOTH);
-        juser.setIcon(new ImageIcon(image1));
+        Image image1 = icon1.getImage().getScaledInstance(lock.getWidth(), lock.getHeight(), Image.SCALE_SMOOTH);
+        lock.setIcon(new ImageIcon(image1));
+        
+        Icon i2 = juser.getIcon();
+        ImageIcon icon2 = (ImageIcon)i2;
+        Image image2 = icon2.getImage().getScaledInstance(juser.getWidth(), juser.getHeight(), Image.SCALE_SMOOTH);
+        juser.setIcon(new ImageIcon(image2));
+        
+        Icon i3 = pic.getIcon();
+        ImageIcon icon3 = (ImageIcon)i3;
+        Image image3 = icon3.getImage().getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
+        pic.setIcon(new ImageIcon(image3));
         
         
     }
+    
+   public static boolean loginAcc(String username, String password){
+       
+      
+        dbConnector connector = new dbConnector();
+        try {
+            String query = "SELECT * FROM tbl_user WHERE user_username = '" + username + "' AND user_pass = '" + password + "'";
+            ResultSet resultSet = connector.getData(query);
+            return resultSet.next();
+        }  catch (SQLException ex) {
+                    return false;
+                    }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,15 +85,14 @@ public class login extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         emailPH1 = new javax.swing.JTextField();
-        emailPH3 = new javax.swing.JTextField();
+        user = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        pass = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-trolley-30.png"))); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 102, 102), 5, true));
@@ -117,6 +139,11 @@ public class login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 102, 102));
         jLabel3.setText("Sign Up");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -177,24 +204,24 @@ public class login extends javax.swing.JFrame {
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 250, 30));
 
-        emailPH3.setBackground(new java.awt.Color(249, 249, 249));
-        emailPH3.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        emailPH3.setBorder(null);
-        emailPH3.addActionListener(new java.awt.event.ActionListener() {
+        user.setBackground(new java.awt.Color(249, 249, 249));
+        user.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
+        user.setBorder(null);
+        user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailPH3ActionPerformed(evt);
+                userActionPerformed(evt);
             }
         });
-        jPanel3.add(emailPH3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 210, 30));
+        jPanel3.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 210, 30));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 250, 30));
 
         jPanel5.setBackground(new java.awt.Color(249, 249, 249));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPasswordField1.setBackground(new java.awt.Color(249, 249, 249));
-        jPasswordField1.setBorder(null);
-        jPanel5.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 210, 30));
+        pass.setBackground(new java.awt.Color(249, 249, 249));
+        pass.setBorder(null);
+        jPanel5.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 210, 30));
 
         jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 250, 30));
 
@@ -223,20 +250,33 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        register reg = new register();
-        reg.setVisible(true);
-        this.dispose();
+        if (loginAcc(user.getText(),pass.getText())){
+            JOptionPane.showMessageDialog(null,"Login Success!");
+            adminDashboard admin = new adminDashboard();
+            admin.setVisible(true);
+            this.dispose();
+        } else {
+             JOptionPane.showMessageDialog(null,"Login Failed!");
+        }
+//        register reg = new register();
+//        reg.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel7MouseClicked
 
-    private void emailPH3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailPH3ActionPerformed
+    private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_emailPH3ActionPerformed
+    }//GEN-LAST:event_userActionPerformed
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+
+       register reg = new register();
+       reg.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -275,7 +315,6 @@ public class login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailPH1;
-    private javax.swing.JTextField emailPH3;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -293,8 +332,9 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel juser;
     private javax.swing.JLabel lock;
+    private javax.swing.JPasswordField pass;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }
