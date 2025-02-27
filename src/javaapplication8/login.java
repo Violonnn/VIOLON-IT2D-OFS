@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import user.userDashboard;
 
 /**
  *
@@ -37,13 +38,15 @@ public class login extends javax.swing.JFrame {
         Image image2 = icon2.getImage().getScaledInstance(juser.getWidth(), juser.getHeight(), Image.SCALE_SMOOTH);
         juser.setIcon(new ImageIcon(image2));
         
-        Icon i3 = pic.getIcon();
+         Icon i3 = jLabel5.getIcon();
         ImageIcon icon3 = (ImageIcon)i3;
-        Image image3 = icon3.getImage().getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
-        pic.setIcon(new ImageIcon(image3));
-        
-        
+        Image image3 = icon3.getImage().getScaledInstance(jLabel5.getWidth(), jLabel5.getHeight(), Image.SCALE_SMOOTH);
+        jLabel5.setIcon(new ImageIcon(image3));
+
     }
+    
+    static String status;
+    static String type;
     
    public static boolean loginAcc(String username, String password){
        
@@ -52,7 +55,16 @@ public class login extends javax.swing.JFrame {
         try {
             String query = "SELECT * FROM tbl_user WHERE user_username = '" + username + "' AND user_pass = '" + password + "'";
             ResultSet resultSet = connector.getData(query);
-            return resultSet.next();
+            if (resultSet.next()){
+                status = resultSet.getString("user_stats");
+                type = resultSet.getString("user_type");
+                return true;
+            }else {
+                return false;
+            }
+            
+            
+            
         }  catch (SQLException ex) {
                     return false;
                     }
@@ -73,6 +85,7 @@ public class login extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -127,6 +140,10 @@ public class login extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Sign up now!");
         jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 390, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/asdasd.jpg"))); // NOI18N
+        jLabel5.setText("jLabel5");
+        jPanel7.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 220, 190));
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 370, 370));
 
@@ -229,7 +246,7 @@ public class login extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(204, 204, 204));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Enter your email and password to log in.");
+        jLabel12.setText("Enter your username and password to log in.");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 380, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -242,7 +259,9 @@ public class login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -250,14 +269,33 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (loginAcc(user.getText(),pass.getText())){
-            JOptionPane.showMessageDialog(null,"Login Success!");
-            adminDashboard admin = new adminDashboard();
-            admin.setVisible(true);
-            this.dispose();
-        } else {
-             JOptionPane.showMessageDialog(null,"Login Failed!");
+     
+        if (user.getText().isEmpty() || pass.getText().isEmpty())
+        {
+             JOptionPane.showMessageDialog(null,"Please Input Username and Password!"); 
+        }     else {
+            if (loginAcc(user.getText(),pass.getText())){          
+              if(!status.equals("Active")){
+            JOptionPane.showMessageDialog(null,"In-active Account, Contact the Admin!");        
+        } else {                          
+                   if(type.equals("Admin")){        
+                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
+                   adminDashboard adm = new adminDashboard();
+                   adm.setVisible(true);
+                   this.dispose();
+               } else if (type.equals("User")) {
+                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
+                   userDashboard us = new userDashboard();
+                   us.setVisible(true);
+                   this.dispose();
+               }
+              }            
+        }else {
+             JOptionPane.showMessageDialog(null,"Invalid Account!");
         }
+        }       
+        
+        
 //        register reg = new register();
 //        reg.setVisible(true);
 //        this.dispose();
@@ -323,6 +361,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

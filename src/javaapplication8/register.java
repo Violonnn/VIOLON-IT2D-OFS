@@ -104,6 +104,14 @@ public class register extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         phone = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,9 +129,8 @@ public class register extends javax.swing.JFrame {
 
         ln.setBackground(new java.awt.Color(249, 249, 249));
         ln.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        ln.setForeground(new java.awt.Color(204, 204, 204));
-        ln.setBorder(null);
-        jPanel2.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 130, 30));
+        ln.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        jPanel2.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, 130, 30));
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -151,18 +158,16 @@ public class register extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(204, 204, 204));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Confirm Password");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 170, 120, 10));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 150, 10));
 
         mn.setBackground(new java.awt.Color(249, 249, 249));
         mn.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        mn.setForeground(new java.awt.Color(204, 204, 204));
-        mn.setBorder(null);
-        jPanel2.add(mn, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 130, 30));
+        mn.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        jPanel2.add(mn, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 130, 30));
 
         fn.setBackground(new java.awt.Color(249, 249, 249));
         fn.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        fn.setForeground(new java.awt.Color(204, 204, 204));
-        fn.setBorder(null);
+        fn.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         fn.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 fnFocusGained(evt);
@@ -177,8 +182,7 @@ public class register extends javax.swing.JFrame {
 
         username.setBackground(new java.awt.Color(249, 249, 249));
         username.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        username.setForeground(new java.awt.Color(204, 204, 204));
-        username.setBorder(null);
+        username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameActionPerformed(evt);
@@ -188,8 +192,7 @@ public class register extends javax.swing.JFrame {
 
         email.setBackground(new java.awt.Color(249, 249, 249));
         email.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        email.setForeground(new java.awt.Color(204, 204, 204));
-        email.setBorder(null);
+        email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailActionPerformed(evt);
@@ -218,12 +221,12 @@ public class register extends javax.swing.JFrame {
 
         pass2.setBackground(new java.awt.Color(249, 249, 249));
         pass2.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        pass2.setBorder(null);
+        pass2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         jPanel2.add(pass2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 180, 200, 30));
 
         pass1.setBackground(new java.awt.Color(249, 249, 249));
         pass1.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        pass1.setBorder(null);
+        pass1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 190, 30));
 
         jLabel11.setBackground(new java.awt.Color(153, 255, 0));
@@ -231,49 +234,54 @@ public class register extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(204, 204, 204));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Last Name");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 120, 10));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 130, 10));
 
         jLabel12.setBackground(new java.awt.Color(153, 255, 0));
         jLabel12.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(204, 204, 204));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("First Name");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 120, 10));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 110, 10));
 
         jLabel13.setBackground(new java.awt.Color(153, 255, 0));
         jLabel13.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(204, 204, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Middle Name");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 130, 10));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 140, 10));
 
         jLabel14.setBackground(new java.awt.Color(153, 255, 0));
         jLabel14.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(204, 204, 204));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Email");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 110, 10));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 90, 10));
 
         jLabel15.setBackground(new java.awt.Color(153, 255, 0));
         jLabel15.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(204, 204, 204));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Username");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 80, 10));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 70, 10));
 
         jLabel16.setBackground(new java.awt.Color(153, 255, 0));
         jLabel16.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(204, 204, 204));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Password");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 120, 10));
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 90, 10));
 
         type.setEditable(true);
         type.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         type.setForeground(new java.awt.Color(204, 204, 204));
-        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", " User", " Admin" }));
+        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", "User", "Admin" }));
         type.setToolTipText("");
         type.setBorder(null);
+        type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeActionPerformed(evt);
+            }
+        });
         jPanel2.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 120, 30));
 
         jLabel17.setBackground(new java.awt.Color(153, 255, 0));
@@ -285,21 +293,148 @@ public class register extends javax.swing.JFrame {
 
         phone.setBackground(new java.awt.Color(249, 249, 249));
         phone.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        phone.setForeground(new java.awt.Color(204, 204, 204));
-        phone.setBorder(null);
+        phone.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         phone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phoneActionPerformed(evt);
             }
         });
-        jPanel2.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 190, 30));
+        jPanel2.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 200, 30));
 
         jLabel18.setBackground(new java.awt.Color(153, 255, 0));
         jLabel18.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(204, 204, 204));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Phone");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 80, 10));
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 110, 10));
+
+        jPanel4.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 200, 30));
+
+        jPanel5.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 150, 30));
+
+        jPanel6.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 140, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 140, 30));
+
+        jPanel8.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 140, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 140, 30));
+
+        jPanel9.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 290, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 290, 30));
+
+        jPanel10.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel10.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 210, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, 210, 30));
+
+        jPanel11.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 210, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 210, 30));
+
+        jPanel12.setBackground(new java.awt.Color(249, 249, 249));
+        jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 210, Short.MAX_VALUE)
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 29, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, 210, 30));
 
         jPanel7.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 530, 360));
 
@@ -356,7 +491,7 @@ public class register extends javax.swing.JFrame {
         }else if (duplicateCheck()){
             System.out.println("Duplicate Existed!");
         }else if (type.getSelectedItem() == " Select"){
-            JOptionPane.showMessageDialog(null, "Please Selecte Admin or User as Registration");
+            JOptionPane.showMessageDialog(null, "Please Select Admin or User as Registration");
         } else if (pass1.getText().length() < 8 || !pass1.getText().equals(pass2.getText()) || pass2.getText().length() < 8 ){
             if (pass1.getText().length() < 8 || pass2.getText().length() < 8){
               JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");            
@@ -364,8 +499,8 @@ public class register extends javax.swing.JFrame {
               JOptionPane.showMessageDialog(null, "Passwords do not match!");            
             }
         } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
-         (!phone.getText().substring(0, 2).equals("09") && !phone.getText().substring(0, 2).equals("69"))) {  
-          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09 or 69.");
+         (!phone.getText().substring(0, 2).equals("09"))) {  
+          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
         }else if (!email.getText().matches("^[a-zA-Z0-9._%+-]+@(gmail\\.com|yahoo\\.com)$")) {
           JOptionPane.showMessageDialog(null, "Email address must contain @gmail.com or @yahoo.com.");
       }else {
@@ -390,6 +525,10 @@ public class register extends javax.swing.JFrame {
     private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneActionPerformed
+
+    private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,9 +581,17 @@ public class register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField ln;
     private javax.swing.JTextField mn;
     private javax.swing.JPasswordField pass1;

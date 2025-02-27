@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package admin;
+package user;
 
 import java.awt.Image;
 import javaapplication8.login;
@@ -15,27 +15,24 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class adminDashboard extends javax.swing.JFrame {
+public class userDashboard extends javax.swing.JFrame {
 
     /**
-     * Creates new form adminDashboard
+     * Creates new form userDashboard
      */
-    public adminDashboard() {
+    public userDashboard() {
         initComponents();
-        Icon i1 = Iadmin1.getIcon();
-        ImageIcon icon1 = (ImageIcon)i1;
-        Image image1 = icon1.getImage().getScaledInstance(Iadmin1.getWidth(), Iadmin1.getHeight(), Image.SCALE_SMOOTH);
-        Iadmin1.setIcon(new ImageIcon(image1));
         
-          Icon i2 = Iadmin2.getIcon();
+            Icon i2 = userr.getIcon();
         ImageIcon icon2 = (ImageIcon)i2;
-        Image image2 = icon2.getImage().getScaledInstance(Iadmin2.getWidth(), Iadmin2.getHeight(), Image.SCALE_SMOOTH);
-        Iadmin2.setIcon(new ImageIcon(image2));
+        Image image2 = icon2.getImage().getScaledInstance(userr.getWidth(), userr.getHeight(), Image.SCALE_SMOOTH);
+        userr.setIcon(new ImageIcon(image2)); 
         
-             Icon i3 = back.getIcon();
+            Icon i3 = back.getIcon();
         ImageIcon icon3 = (ImageIcon)i3;
         Image image3 = icon3.getImage().getScaledInstance(back.getWidth(), back.getHeight(), Image.SCALE_SMOOTH);
         back.setIcon(new ImageIcon(image3)); 
+        
         
     }
 
@@ -48,58 +45,48 @@ public class adminDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         juser = new javax.swing.JLabel();
-        Iadmin2 = new javax.swing.JLabel();
+        userr = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        Iadmin1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         back = new javax.swing.JLabel();
         back1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
 
-        jLabel3.setText("ADMIN DASHBOARD");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 5, true));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 0), 5, true));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Gorlock", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("DASHBOARD");
         jLabel1.setToolTipText("");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 470, 60));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 400, 60));
 
         juser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/account.png"))); // NOI18N
         jPanel2.add(juser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 10, 10));
 
-        Iadmin2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/admin-with-cogwheels.png"))); // NOI18N
-        jPanel2.add(Iadmin2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 30, 30));
+        userr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/account_1.png"))); // NOI18N
+        jPanel2.add(userr, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 30, 30));
 
         jLabel4.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Admin ");
+        jLabel4.setText("User");
         jLabel4.setToolTipText("");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 60, 50));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 50, 50));
 
-        Iadmin1.setBackground(new java.awt.Color(255, 255, 255));
-        Iadmin1.setForeground(new java.awt.Color(255, 255, 255));
-        Iadmin1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/skills.png"))); // NOI18N
-        jPanel2.add(Iadmin1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, 60, 60));
+        jPanel3.setBackground(new java.awt.Color(255, 0, 0));
 
-        jPanel3.setBackground(new java.awt.Color(102, 102, 102));
-
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(204, 0, 0));
         jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel1MouseClicked(evt);
@@ -123,8 +110,8 @@ public class adminDashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(back1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(back1)
+                .addContainerGap(150, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,10 +127,7 @@ public class adminDashboard extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +139,7 @@ public class adminDashboard extends javax.swing.JFrame {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 240, 280));
 
-        jPanel4.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel4.setBackground(new java.awt.Color(255, 51, 0));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -177,14 +161,6 @@ public class adminDashboard extends javax.swing.JFrame {
             }
         });
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setFont(new java.awt.Font("Gorlock", 1, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Users");
-        jLabel6.setToolTipText("");
-        jPanel8.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(65, 0, 70, 40));
-
         jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, 140, 80));
 
         jPanel9.setBackground(new java.awt.Color(255, 153, 153));
@@ -250,16 +226,14 @@ public class adminDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
-      JOptionPane.showMessageDialog(null,"Logged out succesfully!"); 
-       login log = new login();
-       log.setVisible(true);
-       this.dispose();
+      JOptionPane.showMessageDialog(null,"Logged out Succesfully!"); 
+        login log = new login();
+        log.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jPanel1MouseClicked
 
     private void jPanel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel8MouseClicked
-        usersList list = new usersList();
-        list.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_jPanel8MouseClicked
 
     /**
@@ -279,33 +253,29 @@ public class adminDashboard extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminDashboard().setVisible(true);
+                new userDashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Iadmin1;
-    private javax.swing.JLabel Iadmin2;
     private javax.swing.JLabel back;
     private javax.swing.JLabel back1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -315,5 +285,6 @@ public class adminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel juser;
+    private javax.swing.JLabel userr;
     // End of variables declaration//GEN-END:variables
 }
