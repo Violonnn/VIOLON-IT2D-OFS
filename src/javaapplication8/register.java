@@ -6,9 +6,13 @@
 package javaapplication8;
 
 import config.dbConnector;
+import config.passhash;
+import java.awt.Color;
 import java.awt.Image;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -155,7 +159,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel9.setBackground(new java.awt.Color(153, 255, 0));
         jLabel9.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Confirm Password");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 150, 10));
@@ -207,6 +211,12 @@ public class register extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel3MouseExited(evt);
+            }
         });
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 330, -1, -1));
 
@@ -231,42 +241,42 @@ public class register extends javax.swing.JFrame {
 
         jLabel11.setBackground(new java.awt.Color(153, 255, 0));
         jLabel11.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Last Name");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 130, 10));
 
         jLabel12.setBackground(new java.awt.Color(153, 255, 0));
         jLabel12.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("First Name");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 110, 10));
 
         jLabel13.setBackground(new java.awt.Color(153, 255, 0));
         jLabel13.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Middle Name");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 140, 10));
 
         jLabel14.setBackground(new java.awt.Color(153, 255, 0));
         jLabel14.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Email");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 90, 10));
 
         jLabel15.setBackground(new java.awt.Color(153, 255, 0));
         jLabel15.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel15.setForeground(new java.awt.Color(51, 51, 51));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Username");
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 70, 10));
 
         jLabel16.setBackground(new java.awt.Color(153, 255, 0));
         jLabel16.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel16.setForeground(new java.awt.Color(51, 51, 51));
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Password");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 90, 10));
@@ -303,7 +313,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel18.setBackground(new java.awt.Color(153, 255, 0));
         jLabel18.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Phone");
         jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 110, 10));
@@ -485,6 +495,12 @@ public class register extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          
+         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        String emailInput = email.getText().trim();
+              
         if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
                 || pass1.getText().isEmpty() || pass2.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
              JOptionPane.showMessageDialog(null, "All fields are required!");            
@@ -500,14 +516,17 @@ public class register extends javax.swing.JFrame {
             }
         } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
          (!phone.getText().substring(0, 2).equals("09"))) {  
-          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
-        }else if (!email.getText().matches("^[a-zA-Z0-9._%+-]+@(gmail\\.com|yahoo\\.com)$")) {
-          JOptionPane.showMessageDialog(null, "Email address must contain @gmail.com or @yahoo.com.");
-      }else {
-              dbConnector dbc = new dbConnector();       
+          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
+      }
+        else if(!pattern.matcher(emailInput).matches()) {
+            JOptionPane.showMessageDialog(null, "Invalid Email!");        
+        } else {       
+              dbConnector dbc = new dbConnector();     
+              try {
+              String pass = passhash.hashPassword(pass1.getText());
        if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass, "
                 + "user_type, user_stats) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
-                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass1.getText()+"','"+type.getSelectedItem()+"','Pending')")){
+                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass+"','"+type.getSelectedItem()+"','Pending')")){
            JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
            login log = new login();
            log.setVisible(true);
@@ -515,8 +534,10 @@ public class register extends javax.swing.JFrame {
        } else {
            JOptionPane.showMessageDialog(null, "Connection Error!");
        }
+        } catch(NoSuchAlgorithmException ex){
+                  System.out.println(""+ex);
         }
-        
+        }
         
       
         
@@ -529,6 +550,14 @@ public class register extends javax.swing.JFrame {
     private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_typeActionPerformed
+
+    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
+        jLabel3.setForeground(Color.red);
+    }//GEN-LAST:event_jLabel3MouseEntered
+
+    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
+        jLabel3.setForeground(new Color(255,102,102));
+    }//GEN-LAST:event_jLabel3MouseExited
 
     /**
      * @param args the command line arguments
