@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 12:25 PM
+-- Generation Time: Mar 14, 2025 at 10:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,7 +55,8 @@ INSERT INTO `tbl_user` (`user_id`, `user_Fname`, `user_Mname`, `user_Lname`, `us
 (23, 'asdasd', 'asdasdas', 'dasdas', 'asdasdasd@gmail.com', '09123456780', 'userbiol', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Active'),
 (24, 'asdasd', 'asdasda', 'sdasdasd', 'asdws2@gmail.com', '09321654987', 'violon', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Pending'),
 (25, 'violon', 'asd', 'as', 'violon@gmail.com', '09132456987', 'violon1', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Active'),
-(26, 'asda', 'asd', 'asd', 'asdasdss@gmail.com', '09156987462', 'koko', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Active');
+(26, 'asda', 'asd', 'asd', 'asdasdss@gmail.com', '09156987462', 'koko', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Active'),
+(27, 'test', 'test', 'test', 'test@gmail.com', '09123654879', 'testtest', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Active');
 
 --
 -- Indexes for dumped tables
@@ -75,7 +76,7 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `user_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `user_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
