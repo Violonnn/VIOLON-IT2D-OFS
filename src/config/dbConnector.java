@@ -51,6 +51,28 @@ public class dbConnector {
             }
         }
         
+    
+        
+        
+        public boolean insertDataImage(String sql, String destination, String userId) {
+    try {
+        PreparedStatement pst = connect.prepareStatement(sql);
+        
+        // Set the parameters for the query
+        pst.setString(1, destination); // The image path
+        pst.setString(2, userId);      // The user ID
+        
+        pst.executeUpdate();
+        System.out.println("Updated Successfully!");
+        pst.close();
+        return true;
+    } catch (SQLException ex) {
+        System.out.println("Connection Error: " + ex);
+        return false;
+    }
+}
+
+        
          public void updateData(String sql){
             try{
                 PreparedStatement pst = connect.prepareStatement(sql);
@@ -66,7 +88,8 @@ public class dbConnector {
             }
         
         }
-        
+
+
         
     
 }

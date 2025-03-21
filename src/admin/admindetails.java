@@ -5,9 +5,18 @@
  */
 package admin;
 
+import static admin.adminRegi.contact;
+import static admin.adminRegi.em;
+import static admin.adminRegi.usname;
+
+import config.dbConnector;
+import config.passhash;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Pattern;
 import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,12 +26,12 @@ import javax.swing.JOptionPane;
  *
  * @author Admin
  */
-public class adminDashboard1 extends javax.swing.JFrame {
+public class admindetails extends javax.swing.JFrame {
 
     /**
      * Creates new form adminDashboard1
      */
-    public adminDashboard1() {
+    public admindetails() {
         initComponents();
         
         Icon i1 = menu.getIcon();
@@ -35,18 +44,61 @@ public class adminDashboard1 extends javax.swing.JFrame {
         Image image2 = icon2.getImage().getScaledInstance(mana.getWidth(), mana.getHeight(), Image.SCALE_SMOOTH);
         mana.setIcon(new ImageIcon(image2));
         
-         Icon i3 = eye.getIcon();
-        ImageIcon icon3 = (ImageIcon)i3;
-        Image image3 = icon3.getImage().getScaledInstance(eye.getWidth(), eye.getHeight(), Image.SCALE_SMOOTH);
-        eye.setIcon(new ImageIcon(image3));
-        
+//         Icon i3 = eye.getIcon();
+//        ImageIcon icon3 = (ImageIcon)i3;
+//        Image image3 = icon3.getImage().getScaledInstance(eye.getWidth(), eye.getHeight(), Image.SCALE_SMOOTH);
+//        eye.setIcon(new ImageIcon(image3));
+//        
          Icon i4 = stat.getIcon();
         ImageIcon icon4 = (ImageIcon)i4;
         Image image4 = icon4.getImage().getScaledInstance(stat.getWidth(), stat.getHeight(), Image.SCALE_SMOOTH);
         stat.setIcon(new ImageIcon(image4));
         
+//         Icon i5 = info.getIcon();
+//        ImageIcon icon5 = (ImageIcon)i5;
+//        Image image5 = icon5.getImage().getScaledInstance(info.getWidth(), info.getHeight(), Image.SCALE_SMOOTH);
+//        info.setIcon(new ImageIcon(image5));
+        
     }
 
+        public static String em, usname, contact;
+        public boolean updatecheck(){
+              dbConnector dbc = new dbConnector();
+              session ss = session.getInstance();
+              try{
+                String query = "SELECT * FROM tbl_user WHERE (user_username = '" + phone1.getText() + "' OR user_email = '" + email.getText() + "' OR user_phone = '" + phone.getText()+"') AND user_id != '"+ss.getUid()+"'";
+            ResultSet resultSet = dbc.getData(query);
+           
+                   if (resultSet.next()){                      
+                       em = resultSet.getString("user_email");                   
+                       if(em.equals(email.getText())){
+                           JOptionPane.showMessageDialog(null, "Email was already used!");
+                           email.setText("");
+                       }
+                       
+                       usname =resultSet.getString("user_username");
+                       if(usname.equals(phone1.getText())){
+                           JOptionPane.showMessageDialog(null, "Username was already used!");
+                           phone1.setText("");
+                       }
+                       contact =resultSet.getString("user_phone");
+                       
+                       if(contact.equals(phone.getText())){
+                           JOptionPane.showMessageDialog(null, "Phone number was already used!");
+                           phone.setText("");
+                       }
+                       
+                       
+     
+                       return true;
+                   }else {
+                       return false;
+                   }
+              }catch (SQLException ex){
+                  System.out.println(""+ex);
+                  return false;
+              }
+          }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,12 +111,8 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        stat = new javax.swing.JLabel();
         order3 = new javax.swing.JLabel();
         email2 = new javax.swing.JLabel();
-        email1 = new javax.swing.JLabel();
-        Lname = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         mana = new javax.swing.JLabel();
@@ -72,16 +120,46 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        eye = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        email3 = new javax.swing.JLabel();
+        lname = new javax.swing.JLabel();
+        user = new javax.swing.JLabel();
+        fname1 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        fname4 = new javax.swing.JLabel();
+        stat = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        lname1 = new javax.swing.JLabel();
+        fname = new javax.swing.JLabel();
+        fname2 = new javax.swing.JLabel();
+        fname3 = new javax.swing.JLabel();
+        fname5 = new javax.swing.JLabel();
+        fname6 = new javax.swing.JLabel();
+        fn = new javax.swing.JTextField();
+        jPanel12 = new javax.swing.JPanel();
+        mn = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        ln = new javax.swing.JTextField();
+        jPanel14 = new javax.swing.JPanel();
+        email = new javax.swing.JTextField();
+        jPanel15 = new javax.swing.JPanel();
+        phone = new javax.swing.JTextField();
+        jPanel16 = new javax.swing.JPanel();
+        phone1 = new javax.swing.JTextField();
+        jPanel17 = new javax.swing.JPanel();
+        fname7 = new javax.swing.JLabel();
+        phone2 = new javax.swing.JTextField();
+        jPanel18 = new javax.swing.JPanel();
+        fname8 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -103,10 +181,6 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 180, 10));
 
-        stat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/software-engineer.png"))); // NOI18N
-        stat.setAlignmentY(10.0F);
-        jPanel3.add(stat, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 40));
-
         order3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/orderflow.png"))); // NOI18N
         order3.setAlignmentY(10.0F);
         jPanel3.add(order3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, 30));
@@ -115,20 +189,6 @@ public class adminDashboard1 extends javax.swing.JFrame {
         email2.setForeground(new java.awt.Color(204, 204, 204));
         email2.setText("UID:");
         jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 110, -1));
-
-        email1.setFont(new java.awt.Font("Gorlock", 1, 8)); // NOI18N
-        email1.setForeground(new java.awt.Color(204, 204, 204));
-        email1.setText("email");
-        jPanel3.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 110, -1));
-
-        Lname.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        Lname.setForeground(new java.awt.Color(255, 255, 255));
-        Lname.setText("Admin");
-        jPanel3.add(Lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 85, 100, -1));
-
-        jPanel8.setBackground(new java.awt.Color(102, 102, 102));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 180, 60));
 
         jLabel14.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
@@ -147,7 +207,7 @@ public class adminDashboard1 extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Log Out");
+        jLabel1.setText("Back");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -159,7 +219,7 @@ public class adminDashboard1 extends javax.swing.JFrame {
                 jLabel1MouseExited(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 11, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 11, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
@@ -175,15 +235,15 @@ public class adminDashboard1 extends javax.swing.JFrame {
         menu.setAlignmentY(10.0F);
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 14, 10, 10));
 
-        jLabel6.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel6.setText("Admin Dashboard");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
-
         jLabel7.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel7.setText("Home");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 11, -1, -1));
+        jLabel7.setText("Account Details");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 11, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel13.setText("Admin Dashboard");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
 
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 570, 40));
 
@@ -197,40 +257,10 @@ public class adminDashboard1 extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("Dashboard / Home");
+        jLabel11.setText("Dashboard / Home / Account Details");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
 
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 570, 30));
-
-        jPanel7.setBackground(new java.awt.Color(153, 102, 255));
-        jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel7MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel7MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel7MouseExited(evt);
-            }
-        });
-        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel8.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Active Users");
-        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 20));
-
-        eye.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/—Pngtree—eye icon_4592677.png"))); // NOI18N
-        eye.setAlignmentY(10.0F);
-        jPanel7.add(eye, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 30, 30));
-
-        jLabel10.setFont(new java.awt.Font("Gorlock", 1, 24)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("0 ");
-        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 190, 120));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -244,6 +274,286 @@ public class adminDashboard1 extends javax.swing.JFrame {
         );
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 60, -1, -1));
+
+        jPanel8.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setFont(new java.awt.Font("Gorlock", 1, 36)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Account Information");
+        jPanel8.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 17, -1, -1));
+
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 580, 80));
+
+        jPanel9.setBackground(new java.awt.Color(252, 252, 252));
+        jPanel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        email3.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
+        email3.setForeground(new java.awt.Color(204, 204, 204));
+        email3.setText("mstevenviolon@gmail.com");
+        jPanel9.add(email3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 170, 10));
+
+        lname.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        lname.setForeground(new java.awt.Color(51, 51, 51));
+        lname.setText("Violon,");
+        jPanel9.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 130, 10));
+
+        user.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
+        user.setForeground(new java.awt.Color(204, 204, 204));
+        user.setText("(testest)");
+        jPanel9.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 90, 10));
+
+        fname1.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        fname1.setForeground(new java.awt.Color(51, 51, 51));
+        fname1.setText("Marc Steven");
+        jPanel9.add(fname1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 150, 10));
+
+        jPanel10.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        jPanel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel10MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel10MouseExited(evt);
+            }
+        });
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fname4.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        fname4.setForeground(new java.awt.Color(255, 255, 255));
+        fname4.setText("Update");
+        jPanel10.add(fname4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 4, 50, 20));
+
+        jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, 30));
+
+        stat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/software-engineer.png"))); // NOI18N
+        stat.setAlignmentY(10.0F);
+        jPanel9.add(stat, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 12, 50, 50));
+
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 177, 520, 80));
+
+        jPanel11.setBackground(new java.awt.Color(252, 252, 252));
+        jPanel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lname1.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        lname1.setForeground(new java.awt.Color(51, 51, 51));
+        lname1.setText("Personal Information");
+        jPanel11.add(lname1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 10));
+
+        fname.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname.setForeground(new java.awt.Color(51, 51, 51));
+        fname.setText("Phone");
+        jPanel11.add(fname, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 90, 20));
+
+        fname2.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname2.setForeground(new java.awt.Color(51, 51, 51));
+        fname2.setText("First Name");
+        jPanel11.add(fname2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 90, 20));
+
+        fname3.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname3.setForeground(new java.awt.Color(51, 51, 51));
+        fname3.setText("Middle Name");
+        jPanel11.add(fname3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 90, 20));
+
+        fname5.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname5.setForeground(new java.awt.Color(51, 51, 51));
+        fname5.setText("Email");
+        jPanel11.add(fname5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 90, 20));
+
+        fname6.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname6.setForeground(new java.awt.Color(51, 51, 51));
+        fname6.setText("Last Name");
+        jPanel11.add(fname6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 90, 20));
+
+        fn.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        fn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fnActionPerformed(evt);
+            }
+        });
+        jPanel11.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 140, 30));
+
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 30));
+
+        mn.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        mn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnActionPerformed(evt);
+            }
+        });
+        jPanel11.add(mn, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, 140, 30));
+
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, -1, 30));
+
+        ln.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        ln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lnActionPerformed(evt);
+            }
+        });
+        jPanel11.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 140, 30));
+
+        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel14.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 40, -1, 30));
+
+        email.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
+        jPanel11.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 140, 30));
+
+        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 30));
+
+        phone.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        phone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneActionPerformed(evt);
+            }
+        });
+        jPanel11.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 140, 30));
+
+        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel16.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, -1, 30));
+
+        phone1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        phone1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phone1ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(phone1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, 140, 30));
+
+        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel17.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, -1, 30));
+
+        fname7.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname7.setForeground(new java.awt.Color(51, 51, 51));
+        fname7.setText("Username");
+        jPanel11.add(fname7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 90, 20));
+
+        phone2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        phone2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phone2ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(phone2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 140, 30));
+
+        jPanel18.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, 30));
+
+        fname8.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname8.setForeground(new java.awt.Color(51, 51, 51));
+        fname8.setText("Pasword");
+        jPanel11.add(fname8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 90, 20));
+
+        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 265, 520, 180));
+
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 1)); // NOI18N
+        jTextField1.setBorder(null);
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 170, -1, 10));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -261,28 +571,12 @@ public class adminDashboard1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-           JOptionPane.showMessageDialog(null,"Logged out succesfully!"); 
-       login log = new login();
+
+       adminDashboard1 log = new adminDashboard1();
        log.setVisible(true);
        this.dispose();
          
     }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
-        
-        userList1 us = new userList1();
-        us.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jPanel7MouseClicked
-
-    private void jPanel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseEntered
-        jPanel7.setBackground(Color.red);
-        
-    }//GEN-LAST:event_jPanel7MouseEntered
-
-    private void jPanel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseExited
-        jPanel7.setBackground(new Color(153,102,255));
-    }//GEN-LAST:event_jPanel7MouseExited
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
          jLabel1.setForeground(Color.red);
@@ -302,11 +596,164 @@ public class adminDashboard1 extends javax.swing.JFrame {
             this.dispose();
         } else {
         
-        Lname.setText(""+ss.getLname());
-        email1.setText(""+ss.getEmail());
+        lname.setText(""+ss.getLname());
+        fname1.setText(""+ss.getFname());
         email2.setText("UID: "+ss.getUid());
+        email3.setText(""+ss.getEmail());
+        user.setText("("+ss.getUsername()+")");
         }
     }//GEN-LAST:event_formWindowActivated
+
+    private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
+
+        //        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+        //                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        //        Pattern pattern = Pattern.compile(emailRegex);
+        //
+        //        String emailInput = email.getText().trim();
+        //
+        //        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){
+            //             JOptionPane.showMessageDialog(null, "All fields are required!");
+            //        }else if (updatecheck()){
+            //            System.out.println("Duplicate Existed!");
+            //        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") ||
+            //         (!phone.getText().substring(0, 2).equals("09"))) {
+            //          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
+            //        } else if(!pattern.matcher(emailInput).matches()) {
+            //            JOptionPane.showMessageDialog(null, "Invalid Email!");
+            //        } else {
+            //              dbConnector dbc = new dbConnector();
+            //              try {
+                //       if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
+                    //                        +"'"+phone.getText()+ "')")){
+                //           JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
+                //           userDashboard log = new userDashboard();
+                //           log.setVisible(true);
+                //           this.dispose();
+                //       } else {
+                //           JOptionPane.showMessageDialog(null, "Connection Error!");
+                //       }
+            //        } catch(Exception ex){
+            //                  System.out.println(""+ex);
+            //        }
+        //        }
+        //
+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+        "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        String emailInput = email.getText().trim();
+
+        if (fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() ||
+            phone.getText().isEmpty() || email.getText().isEmpty() || phone1.getText().isEmpty() || phone2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields are required!");
+        } else if (updatecheck()) {
+            System.out.println("Duplicate Existed!");
+        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") ||
+            (!phone.getText().substring(0, 2).equals("09"))) {
+            JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
+        } else if (!pattern.matcher(emailInput).matches()) {
+            JOptionPane.showMessageDialog(null, "Invalid Email!");
+        } else if (phone2.getText().length() < 8 ){          
+              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
+        } else {
+            dbConnector dbc = new dbConnector();
+            try {
+                session ss = session.getInstance();  // Get the current user session (assuming `session` holds user data)
+                int userId = ss.getUid(); // Get the current user's ID
+
+                // Step 1: Retrieve the current data from the database
+                String selectQuery = "SELECT user_username, user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass FROM tbl_user WHERE user_id = '" + userId + "'";
+                ResultSet rs = dbc.getData(selectQuery);  // Assuming `getData()` is a method that fetches a ResultSet from the DB
+
+                String currentFname = "", currentMname = "", currentLname = "", currentEmail = "", currentPhone = "", currentuser = "", currentpass = "";
+
+                if (rs.next()) {
+                    currentFname = rs.getString("user_Fname");
+                    currentMname = rs.getString("user_Mname");
+                    currentLname = rs.getString("user_Lname");
+                    currentEmail = rs.getString("user_email");
+                    currentPhone = rs.getString("user_phone");
+                    currentuser = rs.getString("user_username");
+                    currentpass = rs.getString("user_pass");
+                }
+
+                // Step 2: Compare the current values with the user input
+                boolean noChangesDetected = currentFname.equals(fn.getText()) &&
+                currentMname.equals(mn.getText()) &&
+                currentLname.equals(ln.getText()) &&
+                currentEmail.equals(email.getText()) &&              
+                currentPhone.equals(phone.getText()) &&
+                currentuser.equals(phone1.getText()) &&
+                currentpass.equals(phone2.getText());
+
+                // Step 3: If no changes detected, show a message and do nothing
+                if (noChangesDetected) {
+                    JOptionPane.showMessageDialog(null, "No changes detected. Update not required.");
+                } else {
+                    // Step 4: If changes detected, proceed with the update
+                      String pass = passhash.hashPassword(phone2.getText());
+                    String updateQuery = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', "
+                    + "user_Mname = '" + mn.getText() + "', "
+                    + "user_Lname = '" + ln.getText() + "', "
+                    + "user_email = '" + email.getText() + "', "
+                    + "user_phone = '" + phone.getText() + "', "
+                    + "user_username = '" +phone1.getText()+ "', "
+                    + "user_pass = '" + pass + "' "
+                    + "WHERE user_id = '" + userId + "'";  // Assuming `user_id` is the unique field to identify the user
+
+                    if (dbc.insertData(updateQuery)) {
+                        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
+                        login log = new login();
+                        log.setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Connection Error!");
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.println("Error: " + ex);
+            }
+        }
+
+    }//GEN-LAST:event_jPanel10MouseClicked
+
+    private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
+        jPanel10.setBackground(Color.red);
+    }//GEN-LAST:event_jPanel10MouseEntered
+
+    private void jPanel10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseExited
+        jPanel10.setBackground(new Color(255,102,102));
+    }//GEN-LAST:event_jPanel10MouseExited
+
+    private void fnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fnActionPerformed
+
+    private void mnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnActionPerformed
+
+    private void lnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lnActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
+    private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneActionPerformed
+
+    private void phone1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phone1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phone1ActionPerformed
+
+    private void phone2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phone2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phone2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,50 +772,77 @@ public class adminDashboard1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(admindetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(admindetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(admindetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(admindetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminDashboard1().setVisible(true);
+                new admindetails().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Lname;
-    private javax.swing.JLabel email1;
+    public javax.swing.JTextField email;
     private javax.swing.JLabel email2;
-    private javax.swing.JLabel eye;
+    private javax.swing.JLabel email3;
+    public javax.swing.JTextField fn;
+    private javax.swing.JLabel fname;
+    private javax.swing.JLabel fname1;
+    private javax.swing.JLabel fname2;
+    private javax.swing.JLabel fname3;
+    private javax.swing.JLabel fname4;
+    private javax.swing.JLabel fname5;
+    private javax.swing.JLabel fname6;
+    private javax.swing.JLabel fname7;
+    private javax.swing.JLabel fname8;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JTextField jTextField1;
+    public javax.swing.JTextField ln;
+    private javax.swing.JLabel lname;
+    private javax.swing.JLabel lname1;
     private javax.swing.JLabel mana;
     private javax.swing.JLabel menu;
+    public javax.swing.JTextField mn;
     private javax.swing.JLabel order3;
+    public javax.swing.JTextField phone;
+    public javax.swing.JTextField phone1;
+    public javax.swing.JTextField phone2;
     private javax.swing.JLabel stat;
+    private javax.swing.JLabel user;
     // End of variables declaration//GEN-END:variables
 }

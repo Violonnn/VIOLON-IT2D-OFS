@@ -351,7 +351,7 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      
-        if (user.getText().isEmpty() || pass.getText().isEmpty())
+        if (user.getText().equals("Username") || pass.getText().equals("Password"))
         {
              JOptionPane.showMessageDialog(null,"Please Input Username and Password!"); 
         }     else {

@@ -6,16 +6,29 @@
 package admin;
 
 import config.dbConnector;
+import config.passhash;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import javaapplication8.login;
 import javaapplication8.register;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,13 +42,103 @@ public class adminRegi extends javax.swing.JFrame {
      */
     public adminRegi() {
         initComponents();
-        
+         init();
          Icon i2 = mana.getIcon();
         ImageIcon icon2 = (ImageIcon)i2;
         Image image2 = icon2.getImage().getScaledInstance(mana.getWidth(), mana.getHeight(), Image.SCALE_SMOOTH);
         mana.setIcon(new ImageIcon(image2));
         
+           Icon i1 = menu.getIcon();
+        ImageIcon icon1 = (ImageIcon)i1;
+        Image image1 = icon1.getImage().getScaledInstance(menu.getWidth(), menu.getHeight(), Image.SCALE_SMOOTH);
+        menu.setIcon(new ImageIcon(image1));
+        
+       
     }
+    
+    public String destination = "";
+    File selectedFile;
+    public String oldpath;
+    public String path;
+    
+    public int FileExistenceChecker(String path){
+        File file = new File(path);
+        String fileName = file.getName();
+        
+        Path filePath = Paths.get("src/userimage", fileName);
+        boolean fileExists = Files.exists(filePath);
+        
+        if (fileExists) {
+            return 1;
+        } else {
+            return 0;
+        }
+    
+    }
+    
+    
+public static int getHeightFromWidth(String imagePath, int desiredWidth) {
+        try {
+            // Read the image file
+            File imageFile = new File(imagePath);
+            BufferedImage image = ImageIO.read(imageFile);
+            
+            // Get the original width and height of the image
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+            
+            // Calculate the new height based on the desired width and the aspect ratio
+            int newHeight = (int) ((double) desiredWidth / originalWidth * originalHeight);
+            
+            return newHeight;
+        } catch (IOException ex) {
+            System.out.println("No image found!");
+        }
+        
+        return -1;
+    }
+    
+    public  ImageIcon ResizeImage(String ImagePath, byte[] pic, JLabel label) {
+    ImageIcon MyImage = null;
+        if(ImagePath !=null){
+            MyImage = new ImageIcon(ImagePath);
+        }else{
+            MyImage = new ImageIcon(pic);
+        }
+  
+    int newHeight = getHeightFromWidth(ImagePath, label.getWidth());
+
+    Image img = MyImage.getImage();
+    Image newImg = img.getScaledInstance(label.getWidth(), newHeight, Image.SCALE_SMOOTH);
+    ImageIcon image = new ImageIcon(newImg);
+    return image;
+}
+
+      public void imageUpdater(String existingFilePath, String newFilePath){
+        File existingFile = new File(existingFilePath);
+        if (existingFile.exists()) {
+            String parentDirectory = existingFile.getParent();
+            File newFile = new File(newFilePath);
+            String newFileName = newFile.getName();
+            File updatedFile = new File(parentDirectory, newFileName);
+            existingFile.delete();
+            try {
+                Files.copy(newFile.toPath(), updatedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Image updated successfully.");
+            } catch (IOException e) {
+                System.out.println("Error occurred while updating the image: "+e);
+            }
+        } else {
+            try{
+                Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }catch(IOException e){
+                System.out.println("Error on update!");
+            }
+        }
+   }
+    
+    
+    
     
      public static String em, usname, contact;
           public boolean duplicateCheck(){
@@ -93,8 +196,8 @@ public class adminRegi extends javax.swing.JFrame {
                            JOptionPane.showMessageDialog(null, "Username was already used!");
                            username.setText("");
                        }
-                       
                        contact =resultSet.getString("user_phone");
+                       
                        if(contact.equals(phone.getText())){
                            JOptionPane.showMessageDialog(null, "Phone number was already used!");
                            phone.setText("");
@@ -111,6 +214,25 @@ public class adminRegi extends javax.swing.JFrame {
                   return false;
               }
           }
+                    
+                    private String initialFName, initialMName, initialLName, initialUsername, initialPhone, initialEmail;
+
+public void init() {
+    // Initialize form and capture initial values
+    initializeForm();
+}
+
+private void initializeForm() {
+    // Store initial values of the text fields
+    initialFName = fn.getText().trim();
+    initialMName = mn.getText().trim();
+    initialLName = ln.getText().trim();
+    initialUsername = username.getText().trim();
+    initialPhone = phone.getText().trim();
+    initialEmail = email.getText().trim();
+}
+  
+           
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,9 +263,7 @@ public class adminRegi extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        haha = new javax.swing.JLabel();
         ln = new javax.swing.JTextField();
-        stats = new javax.swing.JComboBox<>();
         type = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         mn = new javax.swing.JTextField();
@@ -174,6 +294,14 @@ public class adminRegi extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         add = new javax.swing.JButton();
         upd = new javax.swing.JButton();
+        stats = new javax.swing.JComboBox<>();
+        haha = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        remove = new javax.swing.JButton();
+        select = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        image = new javax.swing.JLabel();
+        prof = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -202,7 +330,7 @@ public class adminRegi extends javax.swing.JFrame {
         email2.setFont(new java.awt.Font("Gorlock", 1, 8)); // NOI18N
         email2.setForeground(new java.awt.Color(204, 204, 204));
         email2.setText("UID:");
-        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 110, -1));
+        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 110, -1));
 
         jLabel23.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
@@ -230,7 +358,7 @@ public class adminRegi extends javax.swing.JFrame {
 
         jPanel3.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 180, 20));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 460));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 550));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -238,7 +366,7 @@ public class adminRegi extends javax.swing.JFrame {
 
         mana.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/manager.png"))); // NOI18N
         mana.setAlignmentY(10.0F);
-        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 5, 30, 30));
+        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 5, 30, 30));
 
         jLabel1.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
@@ -254,7 +382,7 @@ public class adminRegi extends javax.swing.JFrame {
                 jLabel1MouseExited(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(495, 11, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 12, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
@@ -280,7 +408,7 @@ public class adminRegi extends javax.swing.JFrame {
         jLabel10.setText("User Configuration");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 11, -1, -1));
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 570, 40));
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 600, 40));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -295,7 +423,7 @@ public class adminRegi extends javax.swing.JFrame {
         jLabel11.setText("Dashboard / Home / Users List / User Configuration");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 570, 30));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 600, 30));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -310,11 +438,6 @@ public class adminRegi extends javax.swing.JFrame {
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 60, -1, -1));
 
-        haha.setFont(new java.awt.Font("Gorlock", 1, 18)); // NOI18N
-        haha.setForeground(new java.awt.Color(51, 51, 51));
-        haha.setText("User Registration");
-        jPanel2.add(haha, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 96, -1, -1));
-
         ln.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         ln.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,14 +446,14 @@ public class adminRegi extends javax.swing.JFrame {
         });
         jPanel2.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 140, 30));
 
-        stats.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        stats.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", "Active", "Inactive" }));
-        stats.setBorder(null);
-        jPanel2.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 130, 30));
-
         type.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
-        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select ", "Admin", "User" }));
+        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", "Admin", "User" }));
         type.setBorder(null);
+        type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeActionPerformed(evt);
+            }
+        });
         jPanel2.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, 130, 30));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -422,6 +545,7 @@ public class adminRegi extends javax.swing.JFrame {
         jPanel2.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, -1, 30));
 
         pass1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        pass1.setEnabled(false);
         pass1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pass1ActionPerformed(evt);
@@ -451,7 +575,7 @@ public class adminRegi extends javax.swing.JFrame {
                 emailActionPerformed(evt);
             }
         });
-        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 280, 190, 30));
+        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 190, 30));
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -467,7 +591,7 @@ public class adminRegi extends javax.swing.JFrame {
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 280, -1, 30));
+        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, -1, 30));
 
         phone.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         phone.addActionListener(new java.awt.event.ActionListener() {
@@ -526,7 +650,7 @@ public class adminRegi extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
         jLabel20.setText("Email");
-        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 260, -1, 20));
+        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, -1, 20));
 
         jLabel21.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(51, 51, 51));
@@ -547,7 +671,7 @@ public class adminRegi extends javax.swing.JFrame {
                 canActionPerformed(evt);
             }
         });
-        jPanel2.add(can, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 140, 40));
+        jPanel2.add(can, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 470, 140, 40));
 
         uid.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         uid.setEnabled(false);
@@ -597,7 +721,7 @@ public class adminRegi extends javax.swing.JFrame {
                 addActionPerformed(evt);
             }
         });
-        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 330, 140, 40));
+        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, 140, 40));
 
         upd.setBackground(new java.awt.Color(255, 102, 102));
         upd.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
@@ -609,17 +733,72 @@ public class adminRegi extends javax.swing.JFrame {
                 updActionPerformed(evt);
             }
         });
-        jPanel2.add(upd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 390, 140, 40));
+        jPanel2.add(upd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 470, 140, 40));
+
+        stats.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
+        stats.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", "Active", "Pending" }));
+        stats.setBorder(null);
+        stats.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statsActionPerformed(evt);
+            }
+        });
+        jPanel2.add(stats, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 130, 30));
+
+        haha.setFont(new java.awt.Font("Gorlock", 1, 18)); // NOI18N
+        haha.setForeground(new java.awt.Color(51, 51, 51));
+        haha.setText("User Registration");
+        jPanel2.add(haha, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 96, -1, -1));
+
+        jPanel9.setBackground(new java.awt.Color(252, 252, 252));
+        jPanel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        remove.setBackground(new java.awt.Color(255, 102, 102));
+        remove.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        remove.setForeground(new java.awt.Color(255, 255, 255));
+        remove.setText("Remove");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
+        jPanel9.add(remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 40));
+
+        select.setBackground(new java.awt.Color(255, 102, 102));
+        select.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        select.setForeground(new java.awt.Color(255, 255, 255));
+        select.setText("Select");
+        select.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectActionPerformed(evt);
+            }
+        });
+        jPanel9.add(select, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, 140, 40));
+
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel8.add(image, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 80));
+
+        jPanel9.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 110, 100));
+
+        prof.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        prof.setForeground(new java.awt.Color(51, 51, 51));
+        prof.setText("Profile Picture");
+        jPanel9.add(prof, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 90, 30));
+
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 270, 320, 150));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 799, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -718,29 +897,42 @@ public class adminRegi extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(null, "All fields are required!");            
         }else if (duplicateCheck()){
             System.out.println("Duplicate Existed!");
-        }else if (type.getSelectedItem() == " Select"){
-            JOptionPane.showMessageDialog(null, "Please Select Admin or User as Registration");
+        }else if (type.getSelectedItem().toString().equals(" Select")){
+            JOptionPane.showMessageDialog(null, "Please Select User Type");
+        }  else if (stats.getSelectedItem().toString().equals(" Select")){
+             JOptionPane.showMessageDialog(null, "Please Select User Status");                            
         } else if (pass1.getText().length() < 8 ){          
               JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
         } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
          (!phone.getText().substring(0, 2).equals("09"))) {  
           JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
-      }
+      } else if (destination == null || destination.isEmpty()) {  
+    JOptionPane.showMessageDialog(null, "Please select an image!");
+}
         else if(!pattern.matcher(emailInput).matches()) {
             JOptionPane.showMessageDialog(null, "Invalid Email!");        
-        } else {
-              dbConnector dbc = new dbConnector();       
+        }else {       
+              dbConnector dbc = new dbConnector();     
+              try {
+              String pass = passhash.hashPassword(pass1.getText());
        if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass, "
-                + "user_type, user_stats) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
-                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass1.getText()+"','"+type.getSelectedItem()+"','"+stats.getSelectedItem()+"'")){
-           JOptionPane.showMessageDialog(null, "Registered Succesfully!");
-           userList1 user = new userList1();
-          user.setVisible(true);
-          this.dispose();
-          
+                + "user_type, user_stats, user_image) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
+                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass+"','"+type.getSelectedItem()+"','" + stats.getSelectedItem().toString() + "', '"+destination+"')")){
+           try {
+           Files.copy(selectedFile.toPath(),new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+           JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
+           login log = new login();
+           log.setVisible(true);
+           this.dispose();
+           }catch (IOException ex) {
+               System.out.println("Insert Image Error: "+ex);
+           }
        } else {
            JOptionPane.showMessageDialog(null, "Connection Error!");
        }
+        } catch(NoSuchAlgorithmException ex){
+                  System.out.println(""+ex);
+        }
         }
         
     }//GEN-LAST:event_addActionPerformed
@@ -750,7 +942,6 @@ public class adminRegi extends javax.swing.JFrame {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
                             "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
-
         String emailInput = email.getText().trim();
               
         if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
@@ -759,7 +950,7 @@ public class adminRegi extends javax.swing.JFrame {
         }else if (updatecheck()){
             System.out.println("Duplicate Existed!");
         }else if (type.getSelectedItem() == " Select" || stats.getSelectedItem() == " Select"){
-            JOptionPane.showMessageDialog(null, "Please Select Admin or User as Registration");
+            JOptionPane.showMessageDialog(null, "Please Fill Out User Type and Role!");
         } else if (pass1.getText().length() < 8 ){          
               JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
         } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
@@ -768,20 +959,86 @@ public class adminRegi extends javax.swing.JFrame {
       }
         else if(!pattern.matcher(emailInput).matches()) {
             JOptionPane.showMessageDialog(null, "Invalid Email!");        
-        } else {     
-        dbConnector db = new dbConnector();
-        db.updateData("UPDATE tbl_user SET user_Fname = '"+fn.getText()+"',user_Mname = '"+mn.getText()+"'"
-                + ",user_Lname = '"+ln.getText()+"', user_email = '"+email.getText()+"', user_phone = '"+phone.getText()+"'"
-                        + ",user_username = '"+username.getText()+"',user_pass = '"+pass1.getText()+"'"
-                                + ",user_type = '"+type.getSelectedItem()+"'"
-                                        + ",user_stats = '"+stats.getSelectedItem()+"'WHERE user_id = '"+uid.getText()+"'");
+        } else {       
+    dbConnector dbc = new dbConnector();        
+//        String imagePath = (destination.isEmpty()) ? "default.jpg" : destination;
+        String pass = pass1.getText();
+        dbc.updateData("UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
+                       "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
+                       "user_username = '" + username.getText() + "', user_pass = '" + pass + "', user_type = '" + type.getSelectedItem() + "', " +
+                       "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"' WHERE user_id = '" + uid.getText() + "'");
         
-         JOptionPane.showMessageDialog(null, "Updated Successfully!");
-         userList1 user = new userList1();
-         user.setVisible(true);
-         this.dispose();
+        if(destination.isEmpty()){          
+            File existingFile = new File(oldpath);
+            if(existingFile.exists()){
+                existingFile.delete();
+            }
+        } else {
+            if(!(oldpath.equals(path))){
+                imageUpdater(oldpath, path);
+            }
         }
+        
+        
+        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
+        adminDashboard1 log = new adminDashboard1();
+        log.setVisible(true);
+        this.dispose();
+        
+   
+}
+
+  
+        
+    
+
+
     }//GEN-LAST:event_updActionPerformed
+
+    private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeActionPerformed
+
+    private void statsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_statsActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+       remove.setEnabled(false);
+       select.setEnabled(true);
+       image.setIcon(null);
+       destination = "";
+       path = "";
+    }//GEN-LAST:event_removeActionPerformed
+
+    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
+       JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        selectedFile = fileChooser.getSelectedFile();
+                        destination = "src/userimage/" + selectedFile.getName();
+                        path  = selectedFile.getAbsolutePath();
+                        
+                        
+                        if(FileExistenceChecker(path) == 1){
+                          JOptionPane.showMessageDialog(null, "File Already Exist, Rename or Choose another!");
+                            destination = "";
+                            path="";
+                        }else{
+                            image.setIcon(ResizeImage(path, null, image));
+                            select.setEnabled(false);
+                            remove.setEnabled(true);
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("File Error!");
+                    }
+                }
+
+        
+        
+        
+    }//GEN-LAST:event_selectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -826,6 +1083,7 @@ public class adminRegi extends javax.swing.JFrame {
     public javax.swing.JTextField fn;
     public javax.swing.JLabel haha;
     private javax.swing.JLabel home;
+    public javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -859,6 +1117,8 @@ public class adminRegi extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField jTextField1;
     public javax.swing.JTextField ln;
     private javax.swing.JLabel mana;
@@ -867,6 +1127,9 @@ public class adminRegi extends javax.swing.JFrame {
     private javax.swing.JLabel order3;
     public javax.swing.JTextField pass1;
     public javax.swing.JTextField phone;
+    public javax.swing.JLabel prof;
+    public javax.swing.JButton remove;
+    public javax.swing.JButton select;
     public javax.swing.JComboBox<String> stats;
     public javax.swing.JComboBox<String> type;
     public javax.swing.JTextField uid;

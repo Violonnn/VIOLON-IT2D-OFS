@@ -15,6 +15,7 @@ public class session {
     private String lname;
     private String mname;
     private String fname;
+    private String phone;
     private String email;
     private String username;
     private String type;
@@ -66,6 +67,14 @@ public class session {
 
     public void setFname(String fname) {
         this.fname = fname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    
+    public void setPhone(String phone){
+        this.phone = phone;
     }
 
     public String getEmail() {

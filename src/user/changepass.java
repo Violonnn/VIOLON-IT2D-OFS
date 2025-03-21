@@ -379,9 +379,32 @@ public class changepass extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel11KeyPressed
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-       details log = new details();
-       log.setVisible(true);
-       this.dispose();
+
+        
+         try{
+               
+               session ss = session.getInstance();
+               int loginuser = ss.getUid();
+               dbConnector db = new dbConnector();
+               ResultSet rs = db.getData("SELECT * FROM tbl_user WHERE user_id ='"+loginuser+"'");
+               if(rs.next()){
+               details reg = new details();
+               reg.ln.setText(""+rs.getString("user_Lname"));
+               reg.mn.setText(""+rs.getString("user_Mname"));
+               reg.fn.setText(""+rs.getString("user_Fname"));          
+               reg.email.setText(""+rs.getString("user_email"));
+               reg.phone.setText(""+rs.getString("user_phone"));            
+         
+                reg.setVisible(true);
+                this.dispose();
+               } else {
+                   JOptionPane.showMessageDialog(null, "Connection Error!");
+               }
+               
+           }catch(SQLException ex){
+               System.out.println(""+ex);
+           }
+       
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated

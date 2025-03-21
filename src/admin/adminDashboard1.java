@@ -5,13 +5,17 @@
  */
 package admin;
 
+import config.dbConnector;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import user.details;
 
 /**
  *
@@ -45,6 +49,11 @@ public class adminDashboard1 extends javax.swing.JFrame {
         Image image4 = icon4.getImage().getScaledInstance(stat.getWidth(), stat.getHeight(), Image.SCALE_SMOOTH);
         stat.setIcon(new ImageIcon(image4));
         
+         Icon i5 = info.getIcon();
+        ImageIcon icon5 = (ImageIcon)i5;
+        Image image5 = icon5.getImage().getScaledInstance(info.getWidth(), info.getHeight(), Image.SCALE_SMOOTH);
+        info.setIcon(new ImageIcon(image5));
+        
     }
 
     /**
@@ -66,14 +75,17 @@ public class adminDashboard1 extends javax.swing.JFrame {
         Lname = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        info = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         mana = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -135,6 +147,31 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jLabel14.setText("Order Flow System");
         jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 20, -1, -1));
 
+        jPanel9.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel9MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel9MouseExited(evt);
+            }
+        });
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel6.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Account Details");
+        jPanel9.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 3, -1, -1));
+
+        info.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-info-24.png"))); // NOI18N
+        jPanel9.add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 1, 20, 20));
+
+        jPanel3.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 180, 20));
+
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 460));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -175,15 +212,15 @@ public class adminDashboard1 extends javax.swing.JFrame {
         menu.setAlignmentY(10.0F);
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 14, 10, 10));
 
-        jLabel6.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel6.setText("Admin Dashboard");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
-
         jLabel7.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
         jLabel7.setText("Home");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 11, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel12.setText("Admin Dashboard");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
 
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 570, 40));
 
@@ -308,6 +345,42 @@ public class adminDashboard1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowActivated
 
+    private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
+      jPanel9.setBackground(new Color (102,102,102));
+    }//GEN-LAST:event_jPanel9MouseEntered
+
+    private void jPanel9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseExited
+     jPanel9.setBackground(new Color (51,51,51));
+    }//GEN-LAST:event_jPanel9MouseExited
+
+    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
+       try{
+               
+               session ss = session.getInstance();
+               int loginuser = ss.getUid();
+               dbConnector db = new dbConnector();
+               ResultSet rs = db.getData("SELECT * FROM tbl_user WHERE user_id ='"+loginuser+"'");
+               if(rs.next()){
+               admindetails reg = new admindetails();
+               reg.ln.setText(""+rs.getString("user_Lname"));
+               reg.mn.setText(""+rs.getString("user_Mname"));
+               reg.fn.setText(""+rs.getString("user_Fname"));          
+               reg.email.setText(""+rs.getString("user_email"));
+               reg.phone.setText(""+rs.getString("user_phone"));   
+               reg.phone1.setText(""+rs.getString("user_username"));
+               reg.phone2.setText(""+rs.getString("user_pass"));
+               reg.setVisible(true);
+               this.dispose();
+               } else {
+                   JOptionPane.showMessageDialog(null, "Connection Error!");
+               }
+               
+           }catch(SQLException ex){
+               System.out.println(""+ex);
+           }
+        
+    }//GEN-LAST:event_jPanel9MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -348,9 +421,11 @@ public class adminDashboard1 extends javax.swing.JFrame {
     private javax.swing.JLabel email1;
     private javax.swing.JLabel email2;
     private javax.swing.JLabel eye;
+    private javax.swing.JLabel info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -366,6 +441,7 @@ public class adminDashboard1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel mana;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel order3;

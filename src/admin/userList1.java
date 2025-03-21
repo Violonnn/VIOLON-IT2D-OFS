@@ -15,6 +15,7 @@ import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -54,18 +55,26 @@ public class userList1 extends javax.swing.JFrame {
         
     }
     
-     public void displayData(){
-        try{
-            dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT user_id, user_Fname, user_Mname, user_Lname, user_email, user_phone, user_type, user_stats FROM tbl_user");
-            usersTable.setModel(DbUtils.resultSetToTableModel(rs));
-             rs.close();
-        }catch(SQLException ex){
-            System.out.println("Errors: "+ex.getMessage());
 
-        }
+    
+    
+    public void displayData() {
+    try {
+        dbConnector dbc = new dbConnector();
+        session ss = session.getInstance();        
+        int loggedInUserId = ss.getUid(); 
 
+       
+        String sql = "SELECT user_id, user_Fname, user_Mname, user_Lname, user_email, user_phone, user_type, user_stats FROM tbl_user WHERE user_id != '" + loggedInUserId + "'";
+        ResultSet rs = dbc.getData(sql);
+
+        usersTable.setModel(DbUtils.resultSetToTableModel(rs));
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
     }
+}
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -297,13 +306,20 @@ public class userList1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseExited
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-         session ss = session.getInstance();
-         
+         session ss = session.getInstance();        
          email1.setText("UID: "+ss.getUid());
+         
     }//GEN-LAST:event_formWindowActivated
 
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-       int rowIndex = usersTable.getSelectedRow();
+ 
+
+        
+        
+        
+        
+        
+        int rowIndex = usersTable.getSelectedRow();
        
        if(rowIndex < 0){
            JOptionPane.showMessageDialog(null,"Please Select an Item!");
@@ -315,7 +331,7 @@ public class userList1 extends javax.swing.JFrame {
                ResultSet rs = db.getData("SELECT * FROM tbl_user WHERE user_id ='"+tbl.getValueAt(rowIndex,0)+"'");
                if(rs.next()){
                adminRegi reg = new adminRegi();
-               reg.haha.setText("User Configuration");
+               reg.prof.setText("User Configuration");
                reg.uid.setText(""+rs.getString("user_id"));
                reg.ln.setText(""+rs.getString("user_Lname"));
                reg.mn.setText(""+rs.getString("user_Mname"));
@@ -326,9 +342,24 @@ public class userList1 extends javax.swing.JFrame {
                reg.pass1.setText(""+rs.getString("user_pass"));
                reg.email.setText(""+rs.getString("user_email"));
                reg.phone.setText(""+rs.getString("user_phone"));
+               reg.image.setIcon(reg.ResizeImage(rs.getString("user_image"), null, reg.image));
+               reg.oldpath = rs.getString("user_image");
+               reg.path = rs.getString("user_image");
+               reg.destination = rs.getString("user_image");
                reg.add.setEnabled(false);
                reg.upd.setEnabled(true);
                reg.setVisible(true);
+               
+               if(rs.getString("user_image").isEmpty()){
+                   reg.select.setEnabled(true);
+                   reg.remove.setEnabled(false);
+               } else {
+                   reg.select.setEnabled(false);
+                   reg.remove.setEnabled(true);
+               }
+               
+               
+               
                this.dispose();
                } else {
                    JOptionPane.showMessageDialog(null, "Connection Error!");
@@ -352,6 +383,8 @@ public class userList1 extends javax.swing.JFrame {
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
         adminRegi reg = new adminRegi();
         reg.setVisible(true);
+        reg.remove.setEnabled(false);
+        reg.select.setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_jPanel10MouseClicked
 
