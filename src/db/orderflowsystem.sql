@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2025 at 07:05 PM
+-- Generation Time: May 23, 2025 at 10:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,117 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_item`
+--
+
+CREATE TABLE `tbl_item` (
+  `itemID` int(20) NOT NULL,
+  `itemName` varchar(50) NOT NULL,
+  `itemPrice` varchar(50) NOT NULL,
+  `itemQuan` varchar(50) NOT NULL,
+  `itemImage` varchar(300) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_item`
+--
+
+INSERT INTO `tbl_item` (`itemID`, `itemName`, `itemPrice`, `itemQuan`, `itemImage`) VALUES
+(1005, 'jowabo', '10', '3', 'src/userimage/RobloxScreenShot20241011_001623576.png'),
+(1006, 'louise', '100', '0', ''),
+(1007, 'asd', '10', '5', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_logs`
+--
+
+CREATE TABLE `tbl_logs` (
+  `log_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `actions` varchar(200) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_logs`
+--
+
+INSERT INTO `tbl_logs` (`log_id`, `user_id`, `actions`, `date`) VALUES
+(1, 55, 'Added User Record with ID No.  57', '2025-05-23 12:04:52');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_order`
+--
+
+CREATE TABLE `tbl_order` (
+  `orderID` int(20) NOT NULL,
+  `user_id` int(20) NOT NULL,
+  `customer` varchar(50) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `orderStats` varchar(50) NOT NULL,
+  `orderDate` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_order`
+--
+
+INSERT INTO `tbl_order` (`orderID`, `user_id`, `customer`, `address`, `phone`, `orderStats`, `orderDate`) VALUES
+(4, 56, 'sdfds', 'fsdfsd', '09123456789', 'Approved', '2025-05-22'),
+(6, 56, 'asd', 'sss', '09152365111', 'Pending', '2025-05-22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_order_items`
+--
+
+CREATE TABLE `tbl_order_items` (
+  `itemOrderID` int(11) NOT NULL,
+  `orderID` int(11) NOT NULL,
+  `itemID` int(11) NOT NULL,
+  `orderQuan` int(11) NOT NULL,
+  `itemPrice` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_order_items`
+--
+
+INSERT INTO `tbl_order_items` (`itemOrderID`, `orderID`, `itemID`, `orderQuan`, `itemPrice`) VALUES
+(4, 4, 1005, 4, 10),
+(6, 6, 1005, 3, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_pass`
+--
+
+CREATE TABLE `tbl_pass` (
+  `pass_id` int(11) NOT NULL,
+  `user_id` int(20) NOT NULL,
+  `reason` varchar(200) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `data` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_pass`
+--
+
+INSERT INTO `tbl_pass` (`pass_id`, `user_id`, `reason`, `status`, `data`) VALUES
+(1, 55, 'asdasd', 'Approved', '2025-05-23 13:35:21'),
+(2, 56, 'idk', 'Pending', '2025-05-23 15:46:42');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_user`
 --
 
@@ -38,38 +149,56 @@ CREATE TABLE `tbl_user` (
   `user_pass` varchar(150) NOT NULL,
   `user_type` varchar(50) NOT NULL,
   `user_stats` varchar(50) NOT NULL,
-  `user_image` varchar(50) NOT NULL
+  `user_image` varchar(300) DEFAULT NULL,
+  `force_reset` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_user`
 --
 
-INSERT INTO `tbl_user` (`user_id`, `user_Fname`, `user_Mname`, `user_Lname`, `user_email`, `user_phone`, `user_username`, `user_pass`, `user_type`, `user_stats`, `user_image`) VALUES
-(26, 'asda', 'asd', 'asd', 'asdasdss@gmail.com', '09156987462', 'koko', 'uoAeuSTkujyCZbuJRnyXLkznIi6w9vgK9ebredAJPDE=', 'User', 'Active', ''),
-(27, 'test', 'test', 'test', 'test1@gmail.com', '09123654879', 'testtest', 'asdasdasd', 'User', 'Active', ''),
-(31, 'test', 'test', 'test', 'test12121@gmail.com', '09123456987', 'test12', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Pending', ''),
-(32, 'test', 'test', 'test', 'test@g.gmail.com', '09123654987', 'test4', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Active', ''),
-(33, 'test', 'test', 'test', 'test23232@gmail.com', '09159874362', 'testu', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'User', 'Active', ''),
-(34, 'OHAHA', 'ulol', 'jowabol', 'ftest@gmail.com', '09654798213', 'testt', 'Vp/xUYDo7gVm5vVNbXd0mjgft4aG2RCAurzu1/hQzT4=', 'Userte', 'Active', ''),
-(35, 'asd', 'asd', 'asdasdasdasdasd', 'mstevenviolonnnnn@gmail.com', '09123456784', 'admin', 'dBqF6NVFXoCW/lAJKqQvOhGo9/gvETAXq5S7sx591HM=', 'Admin', 'Active', ''),
-(36, 'asd', 'asd', 'asd', 'asdas@YAHOO.com', '09123456785', 'asdasd111', 'ebPBlWEIwYbXDITCrorQURMvVwhqqngNfeXEjapxWFI=', 'User', 'Pending', ''),
-(37, 'asd', 'asd', 'asd', 'asd.asda@scc.net', '09123456781', 'asdasd', 'dBqF6NVFXoCW/lAJKqQvOhGo9/gvETAXq5S7sx591HM=', 'User', 'Active', ''),
-(42, 'test', 'test', 'test', 'testtesttesttest@gmail.com', '09467913582', 'test1', 'NKvpc40QXAj4ki4d/NCRaJjLQOGsL1ULTZdVxAt6VOc=', 'Admin', 'Active', ''),
-(45, 'www', 'www', 'www', 'www@mgio.com', '09159487263', 'www', 'UfilRx+oIuG+mp+jLcNidooK8U+9CWEryjVy0E2oVZY=', 'Admin', 'Active', 'src/userimage/Screenshot 2024-12-05 083958.png'),
-(46, 'test2', 'test2', 'test2', 'test2test2@gmail.casd', '09159846237', 'test2', 'pqqpZ8i1Pm4iYDRyyUZITJsmRA/nHbJ9nIi0O6wpR74=', 'Admin', 'Active', ''),
-(47, 'qwe', 'qwe', 'qwe', 'qweqwe@gmail.com', '09159487623', 'qwe', 'DR6kwlbNUKKnzL/SKz2ZWfb9ML2EC5/zx8Ze5OId8G0=', 'Admin', 'Active', ''),
-(48, 'test3', 'test3', 'test3', 'test3@gmail.com', '09111111111', 'test3', 'abOPF39h/W0QB7+txd8Ggx29Iz6c+XvSdEteQ6LRkW0=', 'Admin', 'Active', ''),
-(49, 'test4', 'test4', 'test4', 'test4@gm.gaaS', '09222222222', 'test4test4', '08QPeR/1Ut87P7Gqr8EtBK/Zziboov+Ho9Eyp+bliYs=', 'Admin', 'Active', 'src/userimage/Screenshot 2024-11-05 010927.png'),
-(50, 'test5', 'test5', 'test5', 'test5test5@gmail.com', '09333333331', 'test5test5', 'gFYPBpuaGjH01qdYVaqnfkbEiYXZHPP7Nxa5VjtzH4o=', 'Admin', 'Active', 'src/userimage/Screenshot 2024-06-04 164158.png'),
-(51, 'test6', 'test6', 'test6', 'test6@gmail.com', '09333333333', 'test6', 'yoTCaOn0lxR5btEbQ25xWueUnKMz4kHWijFK7bnBrdk=', 'Admin', 'Active', ''),
-(52, 'test7', 'test7', 'test7', 'test7@gmail.co', '09444444444', 'test7test7', 'QdOpRRy0pC3HL/8MNeWiuDhnV7ccYz/VSsPl7SiJE5U=', 'Admin', 'Active', 'default.jpg'),
-(53, 'test8', 'test8', 'test8', 'test8@gmail.cs', '09555555555', 'test8', 'fQF+Oa2s9Wy5AlJ3Nn2JYPwdBsrBJzoI1stJ6mPjMVA=', 'Admin', 'Active', 'src/userimage/Screenshot 2025-02-22 184050.png'),
-(54, 'test8', 'test8', 'test8', 'test8@gmail.com', '09666666666', 'test9', 'cT4PjtU612NW+l5Prrz5M8DTWwTdoIANxJ7JwHIgrNw=', 'Admin', 'Active', '');
+INSERT INTO `tbl_user` (`user_id`, `user_Fname`, `user_Mname`, `user_Lname`, `user_email`, `user_phone`, `user_username`, `user_pass`, `user_type`, `user_stats`, `user_image`, `force_reset`) VALUES
+(55, 'test', 'test', 'test', 'test@gmail.com', '09123456789', 'test', 'osltUY8QmaO2r+KeRDNA+fX98SiYU/wDSQhETyvLiYI=', 'Admin', 'Active', '', 0),
+(56, 'test', 'test', 'test1', 'test1@gmail.com', '09321654987', 'test1', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'User', 'Active', '', 0),
+(57, 'test', 'test', 'test', 'testtest2@gmail.com', '09123654789', 'test2', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Active', 'src/userimage/Screenshot 2025-05-10 113726.png', 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_item`
+--
+ALTER TABLE `tbl_item`
+  ADD PRIMARY KEY (`itemID`);
+
+--
+-- Indexes for table `tbl_logs`
+--
+ALTER TABLE `tbl_logs`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `userID` (`user_id`);
+
+--
+-- Indexes for table `tbl_order`
+--
+ALTER TABLE `tbl_order`
+  ADD PRIMARY KEY (`orderID`),
+  ADD KEY `uid` (`user_id`);
+
+--
+-- Indexes for table `tbl_order_items`
+--
+ALTER TABLE `tbl_order_items`
+  ADD PRIMARY KEY (`itemOrderID`),
+  ADD KEY `IDorder` (`orderID`),
+  ADD KEY `IDitem` (`itemID`);
+
+--
+-- Indexes for table `tbl_pass`
+--
+ALTER TABLE `tbl_pass`
+  ADD PRIMARY KEY (`pass_id`);
 
 --
 -- Indexes for table `tbl_user`
@@ -82,10 +211,63 @@ ALTER TABLE `tbl_user`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_item`
+--
+ALTER TABLE `tbl_item`
+  MODIFY `itemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1008;
+
+--
+-- AUTO_INCREMENT for table `tbl_logs`
+--
+ALTER TABLE `tbl_logs`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tbl_order`
+--
+ALTER TABLE `tbl_order`
+  MODIFY `orderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_order_items`
+--
+ALTER TABLE `tbl_order_items`
+  MODIFY `itemOrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_pass`
+--
+ALTER TABLE `tbl_pass`
+  MODIFY `pass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `user_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `user_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tbl_logs`
+--
+ALTER TABLE `tbl_logs`
+  ADD CONSTRAINT `userID` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`);
+
+--
+-- Constraints for table `tbl_order`
+--
+ALTER TABLE `tbl_order`
+  ADD CONSTRAINT `uid` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`);
+
+--
+-- Constraints for table `tbl_order_items`
+--
+ALTER TABLE `tbl_order_items`
+  ADD CONSTRAINT `IDitem` FOREIGN KEY (`itemID`) REFERENCES `tbl_item` (`itemID`),
+  ADD CONSTRAINT `IDorder` FOREIGN KEY (`orderID`) REFERENCES `tbl_order` (`orderID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

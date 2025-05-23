@@ -5,7 +5,9 @@
  */
 package admin;
 
+import static admin.adminRegi.getHeightFromWidth;
 import config.dbConnector;
+import config.passhash;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -56,7 +59,21 @@ public class userList1 extends javax.swing.JFrame {
     }
     
 
-    
+     public  ImageIcon ResizeImage(String ImagePath, byte[] pic, JLabel label) {
+    ImageIcon MyImage = null;
+        if(ImagePath !=null){
+            MyImage = new ImageIcon(ImagePath);
+        }else{
+            MyImage = new ImageIcon(pic);
+        }
+  
+    int newHeight = getHeightFromWidth(ImagePath, label.getWidth());
+
+    Image img = MyImage.getImage();
+    Image newImg = img.getScaledInstance(label.getWidth(), newHeight, Image.SCALE_SMOOTH);
+    ImageIcon image = new ImageIcon(newImg);
+    return image;
+}
     
     public void displayData() {
     try {
@@ -74,7 +91,7 @@ public class userList1 extends javax.swing.JFrame {
         System.out.println("Error: " + ex.getMessage());
     }
 }
-    
+    //ohyeah
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +107,8 @@ public class userList1 extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         order2 = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         email1 = new javax.swing.JLabel();
@@ -138,6 +157,27 @@ public class userList1 extends javax.swing.JFrame {
         order2.setAlignmentY(10.0F);
         jPanel3.add(order2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, 30));
 
+        jPanel11.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel11MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel11MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel11MouseExited(evt);
+            }
+        });
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel16.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("[]   Print User ");
+        jPanel11.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, -1));
+
+        jPanel3.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 180, 20));
+
         jPanel10.setBackground(new java.awt.Color(51, 51, 51));
         jPanel10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -154,7 +194,7 @@ public class userList1 extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("+ Add User");
+        jLabel15.setText("+   Add User");
         jPanel10.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 3, -1, -1));
 
         jPanel3.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 20));
@@ -180,7 +220,7 @@ public class userList1 extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("= Edit User");
+        jLabel13.setText("=   Edit User");
         jPanel9.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 3, -1, -1));
 
         jPanel3.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 180, 20));
@@ -291,7 +331,7 @@ public class userList1 extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
  
-       adminDashboard1 adm = new adminDashboard1();
+       order adm = new order();
        adm.setVisible(true);
        this.dispose();
          
@@ -312,25 +352,22 @@ public class userList1 extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
- 
-
-        
-        
-        
-        
-        
+      
+        adminRegi reg = new adminRegi();     
         int rowIndex = usersTable.getSelectedRow();
-       
+        reg.pass1.setEnabled(false);
+        reg.pass2.setEnabled(false);
        if(rowIndex < 0){
            JOptionPane.showMessageDialog(null,"Please Select an Item!");
        } else {
           
            try{
+                 
                dbConnector db = new dbConnector();
                TableModel tbl = usersTable.getModel();
                ResultSet rs = db.getData("SELECT * FROM tbl_user WHERE user_id ='"+tbl.getValueAt(rowIndex,0)+"'");
                if(rs.next()){
-               adminRegi reg = new adminRegi();
+                    
                reg.prof.setText("User Configuration");
                reg.uid.setText(""+rs.getString("user_id"));
                reg.ln.setText(""+rs.getString("user_Lname"));
@@ -339,7 +376,6 @@ public class userList1 extends javax.swing.JFrame {
                reg.username.setText(""+rs.getString("user_username"));
                reg.type.setSelectedItem(""+rs.getString("user_type"));
                reg.stats.setSelectedItem(""+rs.getString("user_stats"));
-               reg.pass1.setText(""+rs.getString("user_pass"));
                reg.email.setText(""+rs.getString("user_email"));
                reg.phone.setText(""+rs.getString("user_phone"));
                reg.image.setIcon(reg.ResizeImage(rs.getString("user_image"), null, reg.image));
@@ -385,6 +421,10 @@ public class userList1 extends javax.swing.JFrame {
         reg.setVisible(true);
         reg.remove.setEnabled(false);
         reg.select.setEnabled(true);
+        reg.pass1.setEnabled(true);
+        reg.pass2.setEnabled(true);
+        reg.changePass.setVisible(false);
+        reg.newpas.setText("Password");
         this.dispose();
     }//GEN-LAST:event_jPanel10MouseClicked
 
@@ -395,6 +435,20 @@ public class userList1 extends javax.swing.JFrame {
     private void jPanel10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseExited
         jPanel10.setBackground(new Color(51,51,51));
     }//GEN-LAST:event_jPanel10MouseExited
+
+    private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
+       indivPrint p = new indivPrint();
+       p.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jPanel11MouseClicked
+
+    private void jPanel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseEntered
+           jPanel11.setBackground(new Color(102,102,102));
+    }//GEN-LAST:event_jPanel11MouseEntered
+
+    private void jPanel11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseExited
+        jPanel11.setBackground(new Color(51,51,51));
+    }//GEN-LAST:event_jPanel11MouseExited
 
     /**
      * @param args the command line arguments
@@ -439,6 +493,7 @@ public class userList1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -447,6 +502,7 @@ public class userList1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

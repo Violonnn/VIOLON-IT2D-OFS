@@ -7,6 +7,7 @@ package admin;
 
 import static admin.adminRegi.contact;
 import static admin.adminRegi.em;
+import static admin.adminRegi.getHeightFromWidth;
 import static admin.adminRegi.usname;
 
 import config.dbConnector;
@@ -14,12 +15,25 @@ import config.passhash;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import javaapplication8.login;
+import javaapplication8.register;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -60,6 +74,87 @@ public class admindetails extends javax.swing.JFrame {
 //        info.setIcon(new ImageIcon(image5));
         
     }
+    
+     public String destination = "";
+    File selectedFile;
+    public String oldpath;
+    public String path;
+    
+    public int FileExistenceChecker(String path){
+        File file = new File(path);
+        String fileName = file.getName();
+        
+        Path filePath = Paths.get("src/userimage", fileName);
+        boolean fileExists = Files.exists(filePath);
+        
+        if (fileExists) {
+            return 1;
+        } else {
+            return 0;
+        }
+    
+    }
+    
+    public static int getHeightFromWidth(String imagePath, int desiredWidth) {
+        try {
+            // Read the image file
+            File imageFile = new File(imagePath);
+            BufferedImage image = ImageIO.read(imageFile);
+            
+            // Get the original width and height of the image
+            int originalWidth = image.getWidth();
+            int originalHeight = image.getHeight();
+            
+            // Calculate the new height based on the desired width and the aspect ratio
+            int newHeight = (int) ((double) desiredWidth / originalWidth * originalHeight);
+            
+            return newHeight;
+        } catch (IOException ex) {
+            System.out.println("No image found!");
+        }
+        
+        return -1;
+    }
+    
+     public  ImageIcon ResizeImage(String ImagePath, byte[] pic, JLabel label) {
+    ImageIcon MyImage = null;
+        if(ImagePath !=null){
+            MyImage = new ImageIcon(ImagePath);
+        }else{
+            MyImage = new ImageIcon(pic);
+        }
+  
+    int newHeight = getHeightFromWidth(ImagePath, label.getWidth());
+
+    Image img = MyImage.getImage();
+    Image newImg = img.getScaledInstance(label.getWidth(), newHeight, Image.SCALE_SMOOTH);
+    ImageIcon image = new ImageIcon(newImg);
+    return image;
+}
+     
+     public void imageUpdater(String existingFilePath, String newFilePath){
+        File existingFile = new File(existingFilePath);
+        if (existingFile.exists()) {
+            String parentDirectory = existingFile.getParent();
+            File newFile = new File(newFilePath);
+            String newFileName = newFile.getName();
+            File updatedFile = new File(parentDirectory, newFileName);
+            existingFile.delete();
+            try {
+                Files.copy(newFile.toPath(), updatedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Image updated successfully.");
+            } catch (IOException e) {
+                System.out.println("Error occurred while updating the image: "+e);
+            }
+        } else {
+            try{
+                Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }catch(IOException e){
+                System.out.println("Error on update!");
+            }
+        }
+   }
+    
 
         public static String em, usname, contact;
         public boolean updatecheck(){
@@ -156,9 +251,19 @@ public class admindetails extends javax.swing.JFrame {
         phone1 = new javax.swing.JTextField();
         jPanel17 = new javax.swing.JPanel();
         fname7 = new javax.swing.JLabel();
-        phone2 = new javax.swing.JTextField();
-        jPanel18 = new javax.swing.JPanel();
         fname8 = new javax.swing.JLabel();
+        changePass = new javax.swing.JCheckBox();
+        fname9 = new javax.swing.JLabel();
+        pass2 = new javax.swing.JPasswordField();
+        jPanel18 = new javax.swing.JPanel();
+        jPanel19 = new javax.swing.JPanel();
+        pass1 = new javax.swing.JPasswordField();
+        jPanel20 = new javax.swing.JPanel();
+        remove = new javax.swing.JButton();
+        select = new javax.swing.JButton();
+        jPanel21 = new javax.swing.JPanel();
+        image = new javax.swing.JLabel();
+        prof = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -188,14 +293,14 @@ public class admindetails extends javax.swing.JFrame {
         email2.setFont(new java.awt.Font("Gorlock", 1, 8)); // NOI18N
         email2.setForeground(new java.awt.Color(204, 204, 204));
         email2.setText("UID:");
-        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 110, -1));
+        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 610, 110, -1));
 
         jLabel14.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Order Flow System");
         jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 20, -1, -1));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 460));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 630));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -329,13 +434,13 @@ public class admindetails extends javax.swing.JFrame {
         fname4.setText("Update");
         jPanel10.add(fname4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 4, 50, 20));
 
-        jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, 30));
+        jPanel9.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, -1, 30));
 
         stat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/software-engineer.png"))); // NOI18N
         stat.setAlignmentY(10.0F);
         jPanel9.add(stat, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 12, 50, 50));
 
-        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 177, 520, 80));
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 540, 80));
 
         jPanel11.setBackground(new java.awt.Color(252, 252, 252));
         jPanel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
@@ -520,13 +625,30 @@ public class admindetails extends javax.swing.JFrame {
         fname7.setText("Username");
         jPanel11.add(fname7, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, 90, 20));
 
-        phone2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
-        phone2.addActionListener(new java.awt.event.ActionListener() {
+        fname8.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname8.setForeground(new java.awt.Color(51, 51, 51));
+        fname8.setText("New Password");
+        jPanel11.add(fname8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 90, 20));
+
+        changePass.setBackground(new java.awt.Color(252, 252, 252));
+        changePass.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
+        changePass.setText("Change Password");
+        changePass.setBorder(null);
+        changePass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phone2ActionPerformed(evt);
+                changePassActionPerformed(evt);
             }
         });
-        jPanel11.add(phone2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 140, 30));
+        jPanel11.add(changePass, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 140, 20));
+
+        fname9.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
+        fname9.setForeground(new java.awt.Color(51, 51, 51));
+        fname9.setText("Confirm Password");
+        jPanel11.add(fname9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 90, 20));
+
+        pass2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        pass2.setEnabled(false);
+        jPanel11.add(pass2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 140, 30));
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
         jPanel18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -535,21 +657,74 @@ public class admindetails extends javax.swing.JFrame {
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 9, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jPanel11.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, 30));
+        jPanel11.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 10, 30));
 
-        fname8.setFont(new java.awt.Font("Gorlock", 0, 10)); // NOI18N
-        fname8.setForeground(new java.awt.Color(51, 51, 51));
-        fname8.setText("Pasword");
-        jPanel11.add(fname8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 90, 20));
+        jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
 
-        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 265, 520, 180));
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel11.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, 30));
+
+        pass1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        pass1.setEnabled(false);
+        jPanel11.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 140, 30));
+
+        jPanel20.setBackground(new java.awt.Color(252, 252, 252));
+        jPanel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        jPanel20.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        remove.setBackground(new java.awt.Color(255, 102, 102));
+        remove.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        remove.setForeground(new java.awt.Color(255, 255, 255));
+        remove.setText("Remove");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
+        jPanel20.add(remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 40));
+
+        select.setBackground(new java.awt.Color(255, 102, 102));
+        select.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        select.setForeground(new java.awt.Color(255, 255, 255));
+        select.setText("Select");
+        select.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectActionPerformed(evt);
+            }
+        });
+        jPanel20.add(select, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 40, 140, 40));
+
+        jPanel21.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel21.add(image, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 80));
+
+        jPanel20.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 110, 100));
+
+        prof.setFont(new java.awt.Font("Gorlock", 1, 12)); // NOI18N
+        prof.setForeground(new java.awt.Color(51, 51, 51));
+        prof.setText("Profile Picture");
+        jPanel20.add(prof, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 90, 30));
+
+        jPanel11.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 320, 150));
+
+        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 265, 540, 350));
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 1)); // NOI18N
         jTextField1.setBorder(null);
@@ -563,7 +738,7 @@ public class admindetails extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
         );
 
         pack();
@@ -572,7 +747,7 @@ public class admindetails extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
 
-       adminDashboard1 log = new adminDashboard1();
+       order log = new order();
        log.setVisible(true);
        this.dispose();
          
@@ -640,82 +815,82 @@ public class admindetails extends javax.swing.JFrame {
         //
 
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-        "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+                                "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
-
         String emailInput = email.getText().trim();
 
-        if (fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() ||
-            phone.getText().isEmpty() || email.getText().isEmpty() || phone1.getText().isEmpty() || phone2.getText().isEmpty()) {
+        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty()
+                || phone.getText().isEmpty() || email.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "All fields are required!");
-        } else if (updatecheck()) {
+            return;
+        }else if (updatecheck()){
             System.out.println("Duplicate Existed!");
-        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") ||
-            (!phone.getText().substring(0, 2).equals("09"))) {
+            return;
+        }else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") ||
+                (!phone.getText().substring(0, 2).equals("09"))) {
             JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
-        } else if (!pattern.matcher(emailInput).matches()) {
+            return;
+        } else if(!pattern.matcher(emailInput).matches()) {
             JOptionPane.showMessageDialog(null, "Invalid Email!");
-        } else if (phone2.getText().length() < 8 ){          
-              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
-        } else {
-            dbConnector dbc = new dbConnector();
+            return;
+        }
+        session ss = session.getInstance();
+        String sql = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
+                                "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
+                                "user_image = '"+destination+"'";
+        
+        if (changePass.isSelected()) {
             try {
-                session ss = session.getInstance();  // Get the current user session (assuming `session` holds user data)
-                int userId = ss.getUid(); // Get the current user's ID
+                dbConnector db = new dbConnector();
+                String query = "SELECT user_pass FROM tbl_user WHERE user_id ='" + ss.getUid() + "'";
+                ResultSet rs = db.getData(query);
+                if (rs.next()){
+                    String olddbpass = rs.getString("user_pass");
+                    String pass11 = new String(pass1.getPassword());
+                    String pass22 = new String(pass2.getPassword());
 
-                // Step 1: Retrieve the current data from the database
-                String selectQuery = "SELECT user_username, user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass FROM tbl_user WHERE user_id = '" + userId + "'";
-                ResultSet rs = dbc.getData(selectQuery);  // Assuming `getData()` is a method that fetches a ResultSet from the DB
-
-                String currentFname = "", currentMname = "", currentLname = "", currentEmail = "", currentPhone = "", currentuser = "", currentpass = "";
-
-                if (rs.next()) {
-                    currentFname = rs.getString("user_Fname");
-                    currentMname = rs.getString("user_Mname");
-                    currentLname = rs.getString("user_Lname");
-                    currentEmail = rs.getString("user_email");
-                    currentPhone = rs.getString("user_phone");
-                    currentuser = rs.getString("user_username");
-                    currentpass = rs.getString("user_pass");
-                }
-
-                // Step 2: Compare the current values with the user input
-                boolean noChangesDetected = currentFname.equals(fn.getText()) &&
-                currentMname.equals(mn.getText()) &&
-                currentLname.equals(ln.getText()) &&
-                currentEmail.equals(email.getText()) &&              
-                currentPhone.equals(phone.getText()) &&
-                currentuser.equals(phone1.getText()) &&
-                currentpass.equals(phone2.getText());
-
-                // Step 3: If no changes detected, show a message and do nothing
-                if (noChangesDetected) {
-                    JOptionPane.showMessageDialog(null, "No changes detected. Update not required.");
-                } else {
-                    // Step 4: If changes detected, proceed with the update
-                      String pass = passhash.hashPassword(phone2.getText());
-                    String updateQuery = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', "
-                    + "user_Mname = '" + mn.getText() + "', "
-                    + "user_Lname = '" + ln.getText() + "', "
-                    + "user_email = '" + email.getText() + "', "
-                    + "user_phone = '" + phone.getText() + "', "
-                    + "user_username = '" +phone1.getText()+ "', "
-                    + "user_pass = '" + pass + "' "
-                    + "WHERE user_id = '" + userId + "'";  // Assuming `user_id` is the unique field to identify the user
-
-                    if (dbc.insertData(updateQuery)) {
-                        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
-                        login log = new login();
-                        log.setVisible(true);
-                        this.dispose();
+                    if (pass1.getPassword().length < 8 || pass2.getPassword().length < 8){
+                        JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");
+                        return;
+                    } else if (!pass11.equals(pass22)){
+                        JOptionPane.showMessageDialog(null, "Passwords do not match!");
+                        return;
+                    } else if (olddbpass.equals(passhash.hashPassword(pass11))){
+                        JOptionPane.showMessageDialog(null,"Fill Out New Password!");
+                        pass1.setText("");
+                        pass2.setText("");
+                        return;
                     } else {
-                        JOptionPane.showMessageDialog(null, "Connection Error!");
+                        String npass = passhash.hashPassword(pass1.getText());
+                        sql += ", user_pass = '" + npass + "'";
                     }
                 }
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex);
+            } catch (SQLException | NoSuchAlgorithmException ex){
+                System.out.println(""+ex);
+                return;
             }
         }
+      
+        sql += " WHERE user_id = '" + ss.getUid() + "'";
+        dbConnector dbc = new dbConnector();
+        dbc.updateData(sql);
+
+        if(destination.isEmpty()){
+            File existingFile = new File(oldpath);
+            if(existingFile.exists()){
+                existingFile.delete();
+            }
+        } else {
+            if(!(oldpath.equals(path))){
+                imageUpdater(oldpath, path);
+            }
+        }
+
+        
+        adminDashboard1 log = new adminDashboard1();
+        log.setVisible(true);
+        this.dispose();
+    
 
     }//GEN-LAST:event_jPanel10MouseClicked
 
@@ -751,9 +926,48 @@ public class admindetails extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_phone1ActionPerformed
 
-    private void phone2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phone2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_phone2ActionPerformed
+    private void changePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassActionPerformed
+        boolean checked = changePass.isSelected();
+        pass2.setEnabled(checked);
+        pass1.setEnabled(checked);
+        if (!checked) {
+            pass2.setText("");
+            pass1.setText("");
+        }
+    }//GEN-LAST:event_changePassActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        remove.setEnabled(false);
+        select.setEnabled(true);
+        image.setIcon(null);
+        destination = "";
+        path = "";
+    }//GEN-LAST:event_removeActionPerformed
+
+    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            try {
+                selectedFile = fileChooser.getSelectedFile();
+                destination = "src/userimage/" + selectedFile.getName();
+                path  = selectedFile.getAbsolutePath();
+
+                if(FileExistenceChecker(path) == 1){
+                    JOptionPane.showMessageDialog(null, "File Already Exist, Rename or Choose another!");
+                    destination = "";
+                    path="";
+                }else{
+                    image.setIcon(ResizeImage(path, null, image));
+                    select.setEnabled(false);
+                    remove.setEnabled(true);
+                }
+            } catch (Exception ex) {
+                System.out.println("File Error!");
+            }
+        }
+
+    }//GEN-LAST:event_selectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -792,6 +1006,7 @@ public class admindetails extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JCheckBox changePass;
     public javax.swing.JTextField email;
     private javax.swing.JLabel email2;
     private javax.swing.JLabel email3;
@@ -805,6 +1020,8 @@ public class admindetails extends javax.swing.JFrame {
     private javax.swing.JLabel fname6;
     private javax.swing.JLabel fname7;
     private javax.swing.JLabel fname8;
+    private javax.swing.JLabel fname9;
+    public javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -824,7 +1041,10 @@ public class admindetails extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -839,9 +1059,13 @@ public class admindetails extends javax.swing.JFrame {
     private javax.swing.JLabel menu;
     public javax.swing.JTextField mn;
     private javax.swing.JLabel order3;
+    private javax.swing.JPasswordField pass1;
+    private javax.swing.JPasswordField pass2;
     public javax.swing.JTextField phone;
     public javax.swing.JTextField phone1;
-    public javax.swing.JTextField phone2;
+    public javax.swing.JLabel prof;
+    public javax.swing.JButton remove;
+    public javax.swing.JButton select;
     private javax.swing.JLabel stat;
     private javax.swing.JLabel user;
     // End of variables declaration//GEN-END:variables

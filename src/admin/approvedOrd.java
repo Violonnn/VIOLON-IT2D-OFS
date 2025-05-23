@@ -15,19 +15,22 @@ import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 import user.details;
 
 /**
  *
  * @author Admin
  */
-public class adminDashboard1 extends javax.swing.JFrame {
+public class approvedOrd extends javax.swing.JFrame {
 
     /**
      * Creates new form adminDashboard1
      */
-    public adminDashboard1() {
+    public approvedOrd() {
         initComponents();
+        
+        displayData();
         
         Icon i1 = menu.getIcon();
         ImageIcon icon1 = (ImageIcon)i1;
@@ -56,6 +59,48 @@ public class adminDashboard1 extends javax.swing.JFrame {
         
     }
 
+    public void displayData() {
+    try {
+        dbConnector dbc = new dbConnector();
+
+        String sql = "SELECT o.user_id AS 'User ID', " +
+                     "o.orderDate AS 'Order Date', " +
+                     "o.orderID AS 'Order ID', " +
+                     "o.customer AS 'Customer', " +
+                     "o.address AS 'Address', " +
+                     "o.phone AS 'Phone', " +
+                     "SUM(oi.orderQuan) AS 'Total Items', " +
+                     "FORMAT(SUM(oi.itemPrice * oi.orderQuan), 2) AS 'Total Amount' " +
+                     "FROM tbl_order o " +
+                     "JOIN tbl_order_items oi ON o.orderID = oi.orderID " +
+                     "WHERE o.orderStats = 'Approved' " +  // ✅ Only show approved orders
+                     "GROUP BY o.user_id, o.orderID, o.customer, o.address, o.phone, o.orderDate";
+
+        ResultSet rs = dbc.getData(sql);
+
+        if (!rs.isBeforeFirst()) {
+            System.out.println("No approved orders found.");
+        } else {
+            usersTable.setModel(DbUtils.resultSetToTableModel(rs));
+
+            // Add peso sign manually to the "Total Amount" column
+            for (int i = 0; i < usersTable.getRowCount(); i++) {
+                String amount = (String) usersTable.getValueAt(i, usersTable.getColumn("Total Amount").getModelIndex());
+                usersTable.setValueAt("₱" + amount, i, usersTable.getColumn("Total Amount").getModelIndex());
+            }
+        }
+
+        rs.close();
+    } catch (SQLException ex) {
+        System.out.println("SQL Error: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+}
+
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -65,11 +110,8 @@ public class adminDashboard1 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jPanel2 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        eye2 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         order3 = new javax.swing.JLabel();
@@ -81,16 +123,17 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         menu = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        eye3 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        usersTable = new javax.swing.JTable();
+        receipt = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -103,36 +146,6 @@ public class adminDashboard1 extends javax.swing.JFrame {
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 5, true));
         jPanel2.setPreferredSize(new java.awt.Dimension(760, 500));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel11.setBackground(new java.awt.Color(153, 102, 255));
-        jPanel11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel11MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel11MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel11MouseExited(evt);
-            }
-        });
-        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel16.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Approve Pending Orders");
-        jPanel11.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 20));
-
-        eye2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/—Pngtree—eye icon_4592677.png"))); // NOI18N
-        eye2.setAlignmentY(10.0F);
-        jPanel11.add(eye2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 30, 30));
-
-        jLabel17.setFont(new java.awt.Font("Gorlock", 1, 24)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("0 ");
-        jPanel11.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        jPanel2.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, 190, 120));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -164,7 +177,7 @@ public class adminDashboard1 extends javax.swing.JFrame {
 
         mana.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/manager.png"))); // NOI18N
         mana.setAlignmentY(10.0F);
-        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 5, 30, 30));
+        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 5, 30, 30));
 
         jLabel1.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
@@ -180,7 +193,7 @@ public class adminDashboard1 extends javax.swing.JFrame {
                 jLabel1MouseExited(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(486, 12, 40, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(566, 12, 30, -1));
 
         jLabel3.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
@@ -196,17 +209,17 @@ public class adminDashboard1 extends javax.swing.JFrame {
         menu.setAlignmentY(10.0F);
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 14, 10, 10));
 
-        jLabel7.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel7.setText("Home");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 11, -1, -1));
-
         jLabel12.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(51, 51, 51));
         jLabel12.setText("Admin Dashboard");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 560, 40));
+        jLabel8.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel8.setText("Home");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 11, -1, -1));
+
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 630, 40));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -218,10 +231,10 @@ public class adminDashboard1 extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("Dashboard / Home / Order");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 260, -1));
+        jLabel11.setText("Dashboard / Home / Order / Approve Pending Orders");
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 380, -1));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 560, 30));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 630, 30));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -236,45 +249,62 @@ public class adminDashboard1 extends javax.swing.JFrame {
 
         jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 60, -1, -1));
 
-        jPanel12.setBackground(new java.awt.Color(153, 102, 255));
-        jPanel12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel12MouseClicked(evt);
+        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel12MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel12MouseExited(evt);
+        ));
+        jScrollPane1.setViewportView(usersTable);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 630, 280));
+
+        receipt.setBackground(new java.awt.Color(255, 102, 102));
+        receipt.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        receipt.setForeground(new java.awt.Color(255, 255, 255));
+        receipt.setText("See Receipt");
+        receipt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                receiptActionPerformed(evt);
             }
         });
-        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(receipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, 190, 30));
 
-        jLabel18.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("Approved Orders");
-        jPanel12.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 20));
+        jLabel7.setFont(new java.awt.Font("Maiandra GD", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel7.setText("Approved Orders");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 220, 40));
 
-        eye3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/—Pngtree—eye icon_4592677.png"))); // NOI18N
-        eye3.setAlignmentY(10.0F);
-        jPanel12.add(eye3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 30, 30));
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 240, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
 
-        jLabel19.setFont(new java.awt.Font("Gorlock", 1, 24)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("0 ");
-        jPanel12.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
-
-        jPanel2.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, 190, 120));
+        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 240, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 831, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -282,8 +312,8 @@ public class adminDashboard1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        
-       order log = new order();
+     
+       adminDashboard1 log = new adminDashboard1();
        log.setVisible(true);
        this.dispose();
          
@@ -301,10 +331,10 @@ public class adminDashboard1 extends javax.swing.JFrame {
         session ss = session.getInstance();
      
         if(ss.getUid()== 0){
-            JOptionPane.showMessageDialog(null,"No Account, Login First!");
-            login log = new login();
-            log.setVisible(true);
-            this.dispose();
+//            JOptionPane.showMessageDialog(null,"No Account, Login First!");
+//            login log = new login();
+//            log.setVisible(true);
+//            this.dispose();
         } else {
         
 //        Lname.setText(""+ss.getLname());
@@ -313,34 +343,24 @@ public class adminDashboard1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowActivated
 
-    private void jPanel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseClicked
-       approvePen pen = new approvePen();
-       pen.setVisible(true);
-       this.dispose();
-    }//GEN-LAST:event_jPanel11MouseClicked
+    private void receiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receiptActionPerformed
+           int selectedRow = usersTable.getSelectedRow();
 
-    private void jPanel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseEntered
-       jPanel11.setBackground(Color.red);
-        
-    }//GEN-LAST:event_jPanel11MouseEntered
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(null, "Please select an order to view the receipt.");
+        return;
+    }
 
-    private void jPanel11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel11MouseExited
-       jPanel11.setBackground(new Color(153,102,255));
-    }//GEN-LAST:event_jPanel11MouseExited
+    // Get the Order ID from the selected row
+    int orderID = Integer.parseInt(usersTable.getValueAt(selectedRow, usersTable.getColumn("Order ID").getModelIndex()).toString());
 
-    private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-      approvedOrd app = new approvedOrd();
-      app.setVisible(true);
-      this.dispose();
-    }//GEN-LAST:event_jPanel12MouseClicked
+    // Open the indivPrint JFrame and generate receipt
+    indivPrint receiptFrame = new indivPrint();
+    receiptFrame.setVisible(true);
+    receiptFrame.loadReceipt(orderID); // This will call generateReceipt() inside the indivPrint class
+  
 
-    private void jPanel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseEntered
-          jPanel12.setBackground(Color.red);
-    }//GEN-LAST:event_jPanel12MouseEntered
-
-    private void jPanel12MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseExited
-         jPanel12.setBackground(new Color(153,102,255));
-    }//GEN-LAST:event_jPanel12MouseExited
+    }//GEN-LAST:event_receiptActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,50 +379,51 @@ public class adminDashboard1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(approvedOrd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(approvedOrd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(approvedOrd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(adminDashboard1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(approvedOrd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminDashboard1().setVisible(true);
+                new approvedOrd().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel email2;
-    private javax.swing.JLabel eye2;
-    private javax.swing.JLabel eye3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel mana;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel order3;
+    private javax.swing.JButton receipt;
+    private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
 }

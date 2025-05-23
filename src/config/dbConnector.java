@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class dbConnector {
     
-    private Connection connect;
+    public Connection connect;
     
        // constructor to connect to our database
         public dbConnector(){
@@ -29,6 +29,10 @@ public class dbConnector {
                     System.out.println("Can't connect to database: "+ex.getMessage());
             }
         }
+        
+           public Connection getConnection() {
+        return connect;
+    }
     
     //Function to retrieve data
         public ResultSet getData(String sql) throws SQLException{
@@ -78,7 +82,7 @@ public class dbConnector {
                 PreparedStatement pst = connect.prepareStatement(sql);
                     int rowsUpdated = pst.executeUpdate();
                         if(rowsUpdated > 0){
-                            JOptionPane.showMessageDialog(null, "Data Updated Successfully!");
+                             System.out.println("DATA UPDATED SUCCESSFULLY!");
                         }else{
                             System.out.println("Data Update Failed!");
                         }

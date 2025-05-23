@@ -7,6 +7,7 @@ package javaapplication8;
 
 
 import admin.adminDashboard1;
+import admin.order;
 import config.dbConnector;
 import config.passhash;
 import config.session;
@@ -25,7 +26,10 @@ import user.userDashboard;
  * @author Admin
  */
 public class login extends javax.swing.JFrame {
-
+public static int userId;
+public static String status;
+public static String type;
+public static int forceReset; 
     /**
      * Creates new form login
      */
@@ -52,50 +56,48 @@ public class login extends javax.swing.JFrame {
     }
         
     
-    static String status;
-    static String type;
+  
     
    public static boolean loginAcc(String username, String password){
        
       
         dbConnector connector = new dbConnector();
+    
+    try {
+        String query = "SELECT * FROM tbl_user WHERE user_username = '" + username + "'";
+        ResultSet resultSet = connector.getData(query);
         
-        
-        
-        try {
-            String query = "SELECT * FROM tbl_user WHERE user_username = '" + username + "'";
-            ResultSet resultSet = connector.getData(query);
-            if (resultSet.next()){              
-                
-               
-                String hashed = resultSet.getString("user_pass");
-                String rehashed =  passhash.hashPassword((password));
-                
-                 if(hashed.equals(rehashed)){
+        if (resultSet.next()) {
+            String hashed = resultSet.getString("user_pass");
+            String rehashed = passhash.hashPassword(password);
+            
+            if (hashed.equals(rehashed)) {
                 status = resultSet.getString("user_stats");
                 type = resultSet.getString("user_type");
+                forceReset = resultSet.getInt("force_reset"); // <-- read this from DB
+                userId = resultSet.getInt("user_id");
+
                 session ss = session.getInstance();
-                ss.setUid(resultSet.getInt("user_id"));
+                ss.setUid(userId);
                 ss.setLname(resultSet.getString("user_Lname"));
                 ss.setMname(resultSet.getString("user_Mname"));
                 ss.setFname(resultSet.getString("user_Fname"));
                 ss.setEmail(resultSet.getString("user_email"));
                 ss.setUsername(resultSet.getString("user_username"));
-                ss.setType(resultSet.getString("user_type"));
-                ss.setStatus(resultSet.getString("user_stats"));
-                
-                return true; 
-                }else {
-                     return false;
-                 }         
-            }else {
-               
+                ss.setType(type);
+                ss.setStatus(status);
+
+                return true;
+            } else {
                 return false;
             }
+        } else {
+            return false;
+        }
 
-        }  catch (SQLException | NoSuchAlgorithmException ex) {
-                    return false;
-                    }
+    } catch (SQLException | NoSuchAlgorithmException ex) {
+        return false;
+    }
         }
 
     /**
@@ -130,6 +132,7 @@ public class login extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         placeholder = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-trolley-30.png"))); // NOI18N
 
@@ -177,7 +180,7 @@ public class login extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 102, 102));
-        jLabel3.setText("Sign Up");
+        jLabel3.setText("Forgot Password?");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel3MouseClicked(evt);
@@ -189,7 +192,7 @@ public class login extends javax.swing.JFrame {
                 jLabel3MouseExited(evt);
             }
         });
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, -1, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, 20));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel4.setText("Don't have an existing accout?");
@@ -332,6 +335,22 @@ public class login extends javax.swing.JFrame {
         });
         jPanel2.add(placeholder, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, -1));
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 102, 102));
+        jLabel14.setText("Sign Up");
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel14MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel14MouseExited(evt);
+            }
+        });
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -351,35 +370,60 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
      
-        if (user.getText().equals("Username") || pass.getText().equals("Password"))
-        {
-             JOptionPane.showMessageDialog(null,"Please Input Username and Password!"); 
-        }     else {
-            if (loginAcc(user.getText(),pass.getText())){          
-              if(!status.equals("Active")){
-            JOptionPane.showMessageDialog(null,"In-active Account, Contact the Admin!");        
-        } else {                          
-                   if(type.equals("Admin")){        
-                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
-                   adminDashboard1 adm = new adminDashboard1();
-                   adm.setVisible(true);
-                   this.dispose();
-               } else if (type.equals("User")) {
-                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
-                   userDashboard us = new userDashboard();
-                   us.setVisible(true);
-                   this.dispose();
-               }
-              }            
-        }else {
-             JOptionPane.showMessageDialog(null,"Invalid Account!");
+//        if (user.getText().equals("Username") || pass.getText().equals("Password"))
+//        {
+//             JOptionPane.showMessageDialog(null,"Please Input Username and Password!"); 
+//        }     else {
+//            if (loginAcc(user.getText(),pass.getText())){          
+//              if(!status.equals("Active")){
+//            JOptionPane.showMessageDialog(null,"In-active Account, Contact the Admin!");        
+//        } else {                          
+//                   if(type.equals("Admin")){        
+//                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
+//                   order adm = new order();
+//                   adm.setVisible(true);
+//                   this.dispose();
+//               } else if (type.equals("User")) {
+//                   JOptionPane.showMessageDialog(null,"Login Successfully!");  
+//                   userDashboard us = new userDashboard();
+//                   us.setVisible(true);
+//                   this.dispose();
+//               }
+//              }            
+//        }else {
+//             JOptionPane.showMessageDialog(null,"Invalid Account!");
+//        }
+//        }       
+          if (user.getText().equals("Username") || pass.getText().equals("Password")) {
+        JOptionPane.showMessageDialog(null, "Please Input Username and Password!"); 
+    } else {
+        if (loginAcc(user.getText(), pass.getText())) {
+            if (!status.equals("Active")) {
+                JOptionPane.showMessageDialog(null, "In-active Account, Contact the Admin!");        
+            } else {
+                if (forceReset == 1) {
+                    JOptionPane.showMessageDialog(null, "You are required to change your password.");
+                    changepassForm cpf = new changepassForm(); // make sure this JFrame exists
+                    cpf.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Login Successfully!");
+                    if (type.equals("Admin")) {
+                        order adm = new order();
+                        adm.setVisible(true);
+                        this.dispose();
+                    } else if (type.equals("User")) {
+                        userDashboard us = new userDashboard();
+                        us.setVisible(true);
+                        this.dispose();
+                    }
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Account!");
         }
-        }       
-        
-        
-//        register reg = new register();
-//        reg.setVisible(true);
-//        this.dispose();
+    }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
@@ -392,7 +436,7 @@ public class login extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
 
-       register reg = new register();
+       requestPass reg = new requestPass();
        reg.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
@@ -463,6 +507,18 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_placeholderActionPerformed
 
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14MouseEntered
+
+    private void jLabel14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel14MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -504,6 +560,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

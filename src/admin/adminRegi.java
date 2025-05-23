@@ -18,9 +18,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import javaapplication8.login;
 import javaapplication8.register;
@@ -272,8 +275,6 @@ private void initializeForm() {
         jPanel11 = new javax.swing.JPanel();
         username = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
-        pass1 = new javax.swing.JTextField();
-        jPanel13 = new javax.swing.JPanel();
         email = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         phone = new javax.swing.JTextField();
@@ -283,12 +284,14 @@ private void initializeForm() {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        newpas = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         can = new javax.swing.JButton();
         uid = new javax.swing.JTextField();
+        pass1 = new javax.swing.JPasswordField();
+        jPanel13 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -302,6 +305,10 @@ private void initializeForm() {
         jPanel8 = new javax.swing.JPanel();
         image = new javax.swing.JLabel();
         prof = new javax.swing.JLabel();
+        pass2 = new javax.swing.JPasswordField();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        changePass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -330,7 +337,7 @@ private void initializeForm() {
         email2.setFont(new java.awt.Font("Gorlock", 1, 8)); // NOI18N
         email2.setForeground(new java.awt.Color(204, 204, 204));
         email2.setText("UID:");
-        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 110, -1));
+        jPanel3.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 600, 110, -1));
 
         jLabel23.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
@@ -358,7 +365,7 @@ private void initializeForm() {
 
         jPanel3.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 180, 20));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 550));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 620));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -544,38 +551,13 @@ private void initializeForm() {
 
         jPanel2.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, -1, 30));
 
-        pass1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
-        pass1.setEnabled(false);
-        pass1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pass1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 190, 30));
-
-        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 149, Short.MAX_VALUE)
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 150, 30));
-
         email.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailActionPerformed(evt);
             }
         });
-        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 190, 30));
+        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 480, 190, 30));
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -591,7 +573,7 @@ private void initializeForm() {
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, -1, 30));
+        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 480, -1, 30));
 
         phone.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         phone.addActionListener(new java.awt.event.ActionListener() {
@@ -599,7 +581,7 @@ private void initializeForm() {
                 phoneActionPerformed(evt);
             }
         });
-        jPanel2.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 190, 30));
+        jPanel2.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 420, 190, 30));
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -615,7 +597,7 @@ private void initializeForm() {
             .addGap(0, 28, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 120, 30));
+        jPanel2.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, 120, 30));
 
         jLabel8.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
@@ -642,20 +624,20 @@ private void initializeForm() {
         jLabel17.setText("Username");
         jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, -1, 20));
 
-        jLabel18.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel18.setText("Password");
-        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, -1, 20));
+        newpas.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        newpas.setForeground(new java.awt.Color(51, 51, 51));
+        newpas.setText("New Password");
+        jPanel2.add(newpas, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 290, -1, 20));
 
         jLabel20.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(51, 51, 51));
         jLabel20.setText("Email");
-        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, -1, 20));
+        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 460, -1, 20));
 
         jLabel21.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(51, 51, 51));
         jLabel21.setText("Phone");
-        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, -1, 20));
+        jPanel2.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 400, -1, 20));
 
         jLabel22.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(51, 51, 51));
@@ -671,7 +653,7 @@ private void initializeForm() {
                 canActionPerformed(evt);
             }
         });
-        jPanel2.add(can, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 470, 140, 40));
+        jPanel2.add(can, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 540, 140, 40));
 
         uid.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
         uid.setEnabled(false);
@@ -681,6 +663,26 @@ private void initializeForm() {
             }
         });
         jPanel2.add(uid, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, 60, 20));
+
+        pass1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        pass1.setEnabled(false);
+        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 190, 30));
+
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 149, Short.MAX_VALUE)
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, 150, 30));
 
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
         jPanel18.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -721,7 +723,7 @@ private void initializeForm() {
                 addActionPerformed(evt);
             }
         });
-        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, 140, 40));
+        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 540, 140, 40));
 
         upd.setBackground(new java.awt.Color(255, 102, 102));
         upd.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
@@ -733,7 +735,7 @@ private void initializeForm() {
                 updActionPerformed(evt);
             }
         });
-        jPanel2.add(upd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 470, 140, 40));
+        jPanel2.add(upd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 540, 140, 40));
 
         stats.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
         stats.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " Select", "Active", "Pending" }));
@@ -786,19 +788,53 @@ private void initializeForm() {
         prof.setText("Profile Picture");
         jPanel9.add(prof, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 90, 30));
 
-        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 270, 320, 150));
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 310, 320, 150));
+
+        pass2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, new java.awt.Color(255, 51, 51)));
+        pass2.setEnabled(false);
+        jPanel2.add(pass2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 190, 30));
+
+        jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 119, Short.MAX_VALUE)
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 28, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, 120, 30));
+
+        jLabel24.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel24.setText("Confirm Password");
+        jPanel2.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 340, -1, 20));
+
+        changePass.setBackground(new java.awt.Color(255, 255, 255));
+        changePass.setFont(new java.awt.Font("Gorlock", 0, 11)); // NOI18N
+        changePass.setText("Change Password");
+        changePass.setBorder(null);
+        changePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePassActionPerformed(evt);
+            }
+        });
+        jPanel2.add(changePass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 200, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 799, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
         );
 
         pack();
@@ -836,10 +872,6 @@ private void initializeForm() {
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
-
-    private void pass1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pass1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pass1ActionPerformed
 
     private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
         // TODO add your handling code here:
@@ -886,89 +918,252 @@ private void initializeForm() {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+//                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+//        Pattern pattern = Pattern.compile(emailRegex);
+//
+//        String emailInput = email.getText().trim();
+//              
+//        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
+//                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
+//             JOptionPane.showMessageDialog(null, "All fields are required!");            
+//        }else if (duplicateCheck()){
+//            System.out.println("Duplicate Existed!");
+//        }else if (type.getSelectedItem().toString().equals(" Select")){
+//            JOptionPane.showMessageDialog(null, "Please Select User Type");
+//        }  else if (stats.getSelectedItem().toString().equals(" Select")){
+//             JOptionPane.showMessageDialog(null, "Please Select User Status");                            
+//        } else if (pass1.getText().length() < 8 ){          
+//              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
+//        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
+//         (!phone.getText().substring(0, 2).equals("09"))) {  
+//          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
+//      } else if (destination == null || destination.isEmpty()) {  
+//    JOptionPane.showMessageDialog(null, "Please select an image!");
+//}
+//        else if(!pattern.matcher(emailInput).matches()) {
+//            JOptionPane.showMessageDialog(null, "Invalid Email!");        
+//        }else {       
+//              dbConnector dbc = new dbConnector();     
+//              try {
+//              String pass = passhash.hashPassword(pass1.getText());
+//       if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass, "
+//                + "user_type, user_stats, user_image) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
+//                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass+"','"+type.getSelectedItem()+"','" + stats.getSelectedItem().toString() + "', '"+destination+"')")){
+//           try {
+//           Files.copy(selectedFile.toPath(),new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+//           JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
+//           login log = new login();
+//           log.setVisible(true);
+//           this.dispose();
+//           }catch (IOException ex) {
+//               System.out.println("Insert Image Error: "+ex);
+//           }
+//       } else {
+//           JOptionPane.showMessageDialog(null, "Connection Error!");
+//       }
+//        } catch(NoSuchAlgorithmException ex){
+//                  System.out.println(""+ex);
+//        }
+//        }
+         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+                        "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(emailRegex);
 
-        String emailInput = email.getText().trim();
-              
-        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
-                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
-             JOptionPane.showMessageDialog(null, "All fields are required!");            
-        }else if (duplicateCheck()){
-            System.out.println("Duplicate Existed!");
-        }else if (type.getSelectedItem().toString().equals(" Select")){
-            JOptionPane.showMessageDialog(null, "Please Select User Type");
-        }  else if (stats.getSelectedItem().toString().equals(" Select")){
-             JOptionPane.showMessageDialog(null, "Please Select User Status");                            
-        } else if (pass1.getText().length() < 8 ){          
-              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
-        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
-         (!phone.getText().substring(0, 2).equals("09"))) {  
-          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
-      } else if (destination == null || destination.isEmpty()) {  
-    JOptionPane.showMessageDialog(null, "Please select an image!");
-}
-        else if(!pattern.matcher(emailInput).matches()) {
-            JOptionPane.showMessageDialog(null, "Invalid Email!");        
-        }else {       
-              dbConnector dbc = new dbConnector();     
-              try {
-              String pass = passhash.hashPassword(pass1.getText());
-       if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass, "
-                + "user_type, user_stats, user_image) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
-                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass+"','"+type.getSelectedItem()+"','" + stats.getSelectedItem().toString() + "', '"+destination+"')")){
-           try {
-           Files.copy(selectedFile.toPath(),new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
-           JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
-           login log = new login();
-           log.setVisible(true);
-           this.dispose();
-           }catch (IOException ex) {
-               System.out.println("Insert Image Error: "+ex);
-           }
-       } else {
-           JOptionPane.showMessageDialog(null, "Connection Error!");
-       }
-        } catch(NoSuchAlgorithmException ex){
-                  System.out.println(""+ex);
+    String emailInput = email.getText().trim();
+
+    if (fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || 
+        username.getText().isEmpty() || pass1.getText().isEmpty() || 
+        phone.getText().isEmpty() || email.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "All fields are required!");
+    } else if (duplicateCheck()) {
+        System.out.println("Duplicate Existed!");
+    } else if (type.getSelectedItem().toString().equals(" Select")) {
+        JOptionPane.showMessageDialog(null, "Please Select User Type");
+    } else if (stats.getSelectedItem().toString().equals(" Select")) {
+        JOptionPane.showMessageDialog(null, "Please Select User Status");
+    } else if (pass1.getText().length() < 8) {
+        JOptionPane.showMessageDialog(null, "Password must exceed 8 characters!");
+    } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
+               (!phone.getText().substring(0, 2).equals("09"))) {
+        JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
+    } else if (destination == null || destination.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please select an image!");
+    } else if (!pattern.matcher(emailInput).matches()) {
+        JOptionPane.showMessageDialog(null, "Invalid Email!");
+    } else {
+        dbConnector dbc = new dbConnector();
+        Connection conn = dbc.getConnection();
+
+        try {
+            String pass = passhash.hashPassword(pass1.getText());
+
+            String sql = "INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, " +
+                         "user_phone, user_username, user_pass, user_type, user_stats, user_image) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, fn.getText());
+            pstmt.setString(2, mn.getText());
+            pstmt.setString(3, ln.getText());
+            pstmt.setString(4, email.getText());
+            pstmt.setString(5, phone.getText());
+            pstmt.setString(6, username.getText());
+            pstmt.setString(7, pass);
+            pstmt.setString(8, type.getSelectedItem().toString());
+            pstmt.setString(9, stats.getSelectedItem().toString());
+            pstmt.setString(10, destination);
+
+            int rowsInserted = pstmt.executeUpdate();
+            
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            int generatedId = 1;
+            if(generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+            
+            session ss = session.getInstance();
+            dbConnector db = new dbConnector();
+            String action = "Added User Record with ID No.  "+generatedId;
+            db.insertData("INSERT INTO tbl_logs (user_id, actions, date) VALUE ('"+ss.getUid()+"','"+action+"','"+LocalDateTime.now()+"')");
+
+            if (rowsInserted > 0) {
+                try {
+                    Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    JOptionPane.showMessageDialog(null, "Inserted Data Successfully!");
+                    login log = new login();
+                    log.setVisible(true);
+                    this.dispose();
+                } catch (IOException ex) {
+                    System.out.println("Insert Image Error: " + ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Connection Error!");
+            }
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
-        }
-        
+    }
+    
     }//GEN-LAST:event_addActionPerformed
 
     private void updActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updActionPerformed
       
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+//                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+//        Pattern pattern = Pattern.compile(emailRegex);
+//        String emailInput = email.getText().trim();
+//              
+//        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
+//                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
+//             JOptionPane.showMessageDialog(null, "All fields are required!");            
+//        }else if (updatecheck()){
+//            System.out.println("Duplicate Existed!");
+//        }else if (type.getSelectedItem() == " Select" || stats.getSelectedItem() == " Select"){
+//            JOptionPane.showMessageDialog(null, "Please Fill Out User Type and Role!");
+//        } else if (pass1.getText().length() < 8 ){          
+//              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
+//        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
+//         (!phone.getText().substring(0, 2).equals("09"))) {  
+//          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
+//      }
+//        else if(!pattern.matcher(emailInput).matches()) {
+//            JOptionPane.showMessageDialog(null, "Invalid Email!");        
+//        } else {       
+//    dbConnector dbc = new dbConnector();        
+////        String imagePath = (destination.isEmpty()) ? "default.jpg" : destination;
+//        String pass = pass1.getText();
+//        dbc.updateData("UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
+//                       "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
+//                       "user_username = '" + username.getText() + "', user_pass = '" + pass + "', user_type = '" + type.getSelectedItem() + "', " +
+//                       "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"' WHERE user_id = '" + uid.getText() + "'");
+//        
+//        if(destination.isEmpty()){          
+//            File existingFile = new File(oldpath);
+//            if(existingFile.exists()){
+//                existingFile.delete();
+//            }
+//        } else {
+//            if(!(oldpath.equals(path))){
+//                imageUpdater(oldpath, path);
+//            }
+//        }
+//        
+//        
+//        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
+//        adminDashboard1 log = new adminDashboard1();
+//        log.setVisible(true);
+//        this.dispose();
+//        
+//   
+//}
+         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
+                                "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         String emailInput = email.getText().trim();
-              
-        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
-                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
-             JOptionPane.showMessageDialog(null, "All fields are required!");            
+
+        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty()
+                || phone.getText().isEmpty() || email.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "All fields are required!");
+            return;
         }else if (updatecheck()){
             System.out.println("Duplicate Existed!");
+            return;
         }else if (type.getSelectedItem() == " Select" || stats.getSelectedItem() == " Select"){
             JOptionPane.showMessageDialog(null, "Please Fill Out User Type and Role!");
-        } else if (pass1.getText().length() < 8 ){          
-              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
-        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
-         (!phone.getText().substring(0, 2).equals("09"))) {  
-          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
-      }
-        else if(!pattern.matcher(emailInput).matches()) {
-            JOptionPane.showMessageDialog(null, "Invalid Email!");        
-        } else {       
-    dbConnector dbc = new dbConnector();        
-//        String imagePath = (destination.isEmpty()) ? "default.jpg" : destination;
-        String pass = pass1.getText();
-        dbc.updateData("UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
-                       "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
-                       "user_username = '" + username.getText() + "', user_pass = '" + pass + "', user_type = '" + type.getSelectedItem() + "', " +
-                       "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"' WHERE user_id = '" + uid.getText() + "'");
-        
-        if(destination.isEmpty()){          
+            return;
+        }else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") ||
+                (!phone.getText().substring(0, 2).equals("09"))) {
+            JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");
+            return;
+        } else if(!pattern.matcher(emailInput).matches()) {
+            JOptionPane.showMessageDialog(null, "Invalid Email!");
+            return;
+        }
+
+        String sql = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
+                                "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
+                                "user_username = '" + username.getText() + "', user_type = '" + type.getSelectedItem() + "', " +
+                                "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"'";
+
+        if (changePass.isSelected()) {
+            try {
+                dbConnector db = new dbConnector();
+                String query = "SELECT user_pass FROM tbl_user WHERE user_id ='" + uid.getText() + "'";
+                ResultSet rs = db.getData(query);
+                if (rs.next()){
+                    String olddbpass = rs.getString("user_pass");
+                    String pass11 = new String(pass1.getPassword());
+                    String pass22 = new String(pass2.getPassword());
+
+                    if (pass1.getPassword().length < 8 || pass2.getPassword().length < 8){
+                        JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");
+                        return;
+                    } else if (!pass11.equals(pass22)){
+                        JOptionPane.showMessageDialog(null, "Passwords do not match!");
+                        return;
+                    } else if (olddbpass.equals(passhash.hashPassword(pass11))){
+                        JOptionPane.showMessageDialog(null,"Fill Out New Password!");
+                        pass1.setText("");
+                        pass2.setText("");
+                        return;
+                    } else {
+                        String npass = passhash.hashPassword(pass1.getText());
+                        sql += ", user_pass = '" + npass + "'";
+                    }
+                }
+            } catch (SQLException | NoSuchAlgorithmException ex){
+                System.out.println(""+ex);
+                return;
+            }
+        }
+
+        sql += " WHERE user_id = '" + uid.getText() + "'";
+        dbConnector dbc = new dbConnector();
+        dbc.updateData(sql);
+
+        if(destination.isEmpty()){
             File existingFile = new File(oldpath);
             if(existingFile.exists()){
                 existingFile.delete();
@@ -978,21 +1173,13 @@ private void initializeForm() {
                 imageUpdater(oldpath, path);
             }
         }
+
         
-        
-        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
         adminDashboard1 log = new adminDashboard1();
         log.setVisible(true);
         this.dispose();
-        
-   
-}
-
-  
-        
     
-
-
+  
     }//GEN-LAST:event_updActionPerformed
 
     private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
@@ -1040,6 +1227,16 @@ private void initializeForm() {
         
     }//GEN-LAST:event_selectActionPerformed
 
+    private void changePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassActionPerformed
+      boolean checked = changePass.isSelected();
+        pass1.setEnabled(checked);
+        pass2.setEnabled(checked);
+        if (!checked) {
+            pass1.setText("");
+            pass2.setText("");
+        }
+    }//GEN-LAST:event_changePassActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1078,6 +1275,7 @@ private void initializeForm() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton add;
     public javax.swing.JButton can;
+    public javax.swing.JCheckBox changePass;
     public javax.swing.JTextField email;
     private javax.swing.JLabel email2;
     public javax.swing.JTextField fn;
@@ -1091,11 +1289,11 @@ private void initializeForm() {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
@@ -1111,6 +1309,7 @@ private void initializeForm() {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1124,8 +1323,10 @@ private void initializeForm() {
     private javax.swing.JLabel mana;
     private javax.swing.JLabel menu;
     public javax.swing.JTextField mn;
+    public javax.swing.JLabel newpas;
     private javax.swing.JLabel order3;
-    public javax.swing.JTextField pass1;
+    public javax.swing.JPasswordField pass1;
+    public javax.swing.JPasswordField pass2;
     public javax.swing.JTextField phone;
     public javax.swing.JLabel prof;
     public javax.swing.JButton remove;
