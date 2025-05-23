@@ -918,54 +918,7 @@ private void initializeForm() {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-//                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-//        Pattern pattern = Pattern.compile(emailRegex);
-//
-//        String emailInput = email.getText().trim();
-//              
-//        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
-//                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
-//             JOptionPane.showMessageDialog(null, "All fields are required!");            
-//        }else if (duplicateCheck()){
-//            System.out.println("Duplicate Existed!");
-//        }else if (type.getSelectedItem().toString().equals(" Select")){
-//            JOptionPane.showMessageDialog(null, "Please Select User Type");
-//        }  else if (stats.getSelectedItem().toString().equals(" Select")){
-//             JOptionPane.showMessageDialog(null, "Please Select User Status");                            
-//        } else if (pass1.getText().length() < 8 ){          
-//              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
-//        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
-//         (!phone.getText().substring(0, 2).equals("09"))) {  
-//          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
-//      } else if (destination == null || destination.isEmpty()) {  
-//    JOptionPane.showMessageDialog(null, "Please select an image!");
-//}
-//        else if(!pattern.matcher(emailInput).matches()) {
-//            JOptionPane.showMessageDialog(null, "Invalid Email!");        
-//        }else {       
-//              dbConnector dbc = new dbConnector();     
-//              try {
-//              String pass = passhash.hashPassword(pass1.getText());
-//       if(dbc.insertData("INSERT INTO tbl_user (user_Fname, user_Mname, user_Lname, user_email, user_phone, user_username, user_pass, "
-//                + "user_type, user_stats, user_image) VALUES ('"+fn.getText()+"','"+mn.getText()+"','"+ln.getText()+"','"+email.getText()+"',"
-//                        +"'"+phone.getText()+"','"+username.getText()+"','"+pass+"','"+type.getSelectedItem()+"','" + stats.getSelectedItem().toString() + "', '"+destination+"')")){
-//           try {
-//           Files.copy(selectedFile.toPath(),new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
-//           JOptionPane.showMessageDialog(null, "Inserted Data Succesfully!");
-//           login log = new login();
-//           log.setVisible(true);
-//           this.dispose();
-//           }catch (IOException ex) {
-//               System.out.println("Insert Image Error: "+ex);
-//           }
-//       } else {
-//           JOptionPane.showMessageDialog(null, "Connection Error!");
-//       }
-//        } catch(NoSuchAlgorithmException ex){
-//                  System.out.println(""+ex);
-//        }
-//        }
+
          String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
                         "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     Pattern pattern = Pattern.compile(emailRegex);
@@ -1049,55 +1002,7 @@ private void initializeForm() {
     }//GEN-LAST:event_addActionPerformed
 
     private void updActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updActionPerformed
-      
-//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-//                            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-//        Pattern pattern = Pattern.compile(emailRegex);
-//        String emailInput = email.getText().trim();
-//              
-//        if(fn.getText().isEmpty() || mn.getText().isEmpty() || ln.getText().isEmpty() || username.getText().isEmpty() 
-//                || pass1.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty()){       
-//             JOptionPane.showMessageDialog(null, "All fields are required!");            
-//        }else if (updatecheck()){
-//            System.out.println("Duplicate Existed!");
-//        }else if (type.getSelectedItem() == " Select" || stats.getSelectedItem() == " Select"){
-//            JOptionPane.showMessageDialog(null, "Please Fill Out User Type and Role!");
-//        } else if (pass1.getText().length() < 8 ){          
-//              JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");                       
-//        } else if (phone.getText().length() != 11 || !phone.getText().matches("\\d+") || 
-//         (!phone.getText().substring(0, 2).equals("09"))) {  
-//          JOptionPane.showMessageDialog(null, "Phone number must contain 11 digits with the first two digits being 09.");       
-//      }
-//        else if(!pattern.matcher(emailInput).matches()) {
-//            JOptionPane.showMessageDialog(null, "Invalid Email!");        
-//        } else {       
-//    dbConnector dbc = new dbConnector();        
-////        String imagePath = (destination.isEmpty()) ? "default.jpg" : destination;
-//        String pass = pass1.getText();
-//        dbc.updateData("UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
-//                       "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
-//                       "user_username = '" + username.getText() + "', user_pass = '" + pass + "', user_type = '" + type.getSelectedItem() + "', " +
-//                       "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"' WHERE user_id = '" + uid.getText() + "'");
-//        
-//        if(destination.isEmpty()){          
-//            File existingFile = new File(oldpath);
-//            if(existingFile.exists()){
-//                existingFile.delete();
-//            }
-//        } else {
-//            if(!(oldpath.equals(path))){
-//                imageUpdater(oldpath, path);
-//            }
-//        }
-//        
-//        
-//        JOptionPane.showMessageDialog(null, "Updated Data Successfully!");
-//        adminDashboard1 log = new adminDashboard1();
-//        log.setVisible(true);
-//        this.dispose();
-//        
-//   
-//}
+
          String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
                                 "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -1122,64 +1027,101 @@ private void initializeForm() {
             return;
         }
 
-        String sql = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
-                                "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
-                                "user_username = '" + username.getText() + "', user_type = '" + type.getSelectedItem() + "', " +
-                                "user_stats = '" + stats.getSelectedItem() + "', user_image = '"+destination+"'";
+       try {
+    dbConnector db = new dbConnector();
+    Connection conn = db.getConnection();
 
-        if (changePass.isSelected()) {
-            try {
-                dbConnector db = new dbConnector();
-                String query = "SELECT user_pass FROM tbl_user WHERE user_id ='" + uid.getText() + "'";
-                ResultSet rs = db.getData(query);
-                if (rs.next()){
-                    String olddbpass = rs.getString("user_pass");
-                    String pass11 = new String(pass1.getPassword());
-                    String pass22 = new String(pass2.getPassword());
+    String sql = "UPDATE tbl_user SET user_Fname = ?, user_Mname = ?, user_Lname = ?, user_email = ?, user_phone = ?, " +
+                 "user_username = ?, user_type = ?, user_stats = ?, user_image = ?";
 
-                    if (pass1.getPassword().length < 8 || pass2.getPassword().length < 8){
-                        JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");
-                        return;
-                    } else if (!pass11.equals(pass22)){
-                        JOptionPane.showMessageDialog(null, "Passwords do not match!");
-                        return;
-                    } else if (olddbpass.equals(passhash.hashPassword(pass11))){
-                        JOptionPane.showMessageDialog(null,"Fill Out New Password!");
-                        pass1.setText("");
-                        pass2.setText("");
-                        return;
-                    } else {
-                        String npass = passhash.hashPassword(pass1.getText());
-                        sql += ", user_pass = '" + npass + "'";
-                    }
-                }
-            } catch (SQLException | NoSuchAlgorithmException ex){
-                System.out.println(""+ex);
+    String newPass = null;
+
+    if (changePass.isSelected()) {
+        String query = "SELECT user_pass FROM tbl_user WHERE user_id = ?";
+        PreparedStatement pst = conn.prepareStatement(query);
+        pst.setString(1, uid.getText());
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            String olddbpass = rs.getString("user_pass");
+            String pass11 = new String(pass1.getPassword());
+            String pass22 = new String(pass2.getPassword());
+
+            if (pass1.getPassword().length < 8 || pass2.getPassword().length < 8) {
+                JOptionPane.showMessageDialog(null, "Password must exceed to 8 characters!");
                 return;
+            } else if (!pass11.equals(pass22)) {
+                JOptionPane.showMessageDialog(null, "Passwords do not match!");
+                return;
+            } else if (olddbpass.equals(passhash.hashPassword(pass11))) {
+                JOptionPane.showMessageDialog(null, "Fill Out New Password!");
+                pass1.setText("");
+                pass2.setText("");
+                return;
+            } else {
+                newPass = passhash.hashPassword(pass11);
+                sql += ", user_pass = ?";
             }
         }
+    }
 
-        sql += " WHERE user_id = '" + uid.getText() + "'";
-        dbConnector dbc = new dbConnector();
-        dbc.updateData(sql);
+    sql += " WHERE user_id = ?";
 
-        if(destination.isEmpty()){
-            File existingFile = new File(oldpath);
-            if(existingFile.exists()){
-                existingFile.delete();
-            }
-        } else {
-            if(!(oldpath.equals(path))){
-                imageUpdater(oldpath, path);
-            }
-        }
-
-        
-        adminDashboard1 log = new adminDashboard1();
-        log.setVisible(true);
-        this.dispose();
+    PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    pstmt.setString(1, fn.getText());
+    pstmt.setString(2, mn.getText());
+    pstmt.setString(3, ln.getText());
+    pstmt.setString(4, email.getText());
+    pstmt.setString(5, phone.getText());
+    pstmt.setString(6, username.getText());
+    pstmt.setString(7, type.getSelectedItem().toString());
+    pstmt.setString(8, stats.getSelectedItem().toString());
+    pstmt.setString(9, destination);
     
-  
+    
+    
+    int paramIndex = 10;
+    if (newPass != null) {
+        pstmt.setString(paramIndex++, newPass);
+    }
+
+    pstmt.setString(paramIndex, uid.getText());
+
+    int rowsUpdated = pstmt.executeUpdate();
+     
+    
+       ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            int generatedId = 1;
+            if(generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+            
+            session ss = session.getInstance();
+            String action = "Updated User Record with ID No.  "+generatedId;
+            db.insertData("INSERT INTO tbl_logs (user_id, actions, date) VALUE ('"+ss.getUid()+"','"+action+"','"+LocalDateTime.now()+"')");
+
+    
+    if (destination.isEmpty()) {
+        File existingFile = new File(oldpath);
+        if (existingFile.exists()) {
+            existingFile.delete();
+        }
+    } else {
+        if (!oldpath.equals(path)) {
+            imageUpdater(oldpath, path);
+        }
+    }
+
+    userList1 log = new userList1();
+    log.setVisible(true);
+    this.dispose();
+
+} catch (SQLException | NoSuchAlgorithmException ex) {
+    ex.printStackTrace();
+    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+}
+ 
+       
     }//GEN-LAST:event_updActionPerformed
 
     private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed

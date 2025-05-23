@@ -536,7 +536,9 @@ public class order extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel11MouseExited
 
     private void jPanel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseClicked
-        // TODO add your handling code here:
+     systemLog log = new systemLog();
+     log.setVisible(true);
+     this.dispose();
     }//GEN-LAST:event_jPanel12MouseClicked
 
     private void jPanel12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel12MouseEntered

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2025 at 10:47 AM
+-- Generation Time: May 23, 2025 at 02:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `tbl_item` (
 --
 
 INSERT INTO `tbl_item` (`itemID`, `itemName`, `itemPrice`, `itemQuan`, `itemImage`) VALUES
-(1005, 'jowabo', '10', '3', 'src/userimage/RobloxScreenShot20241011_001623576.png'),
+(1005, 'jowabo', '10', '6', 'src/userimage/RobloxScreenShot20241011_001623576.png'),
 (1006, 'louise', '100', '0', ''),
 (1007, 'asd', '10', '5', '');
 
@@ -62,7 +62,9 @@ CREATE TABLE `tbl_logs` (
 --
 
 INSERT INTO `tbl_logs` (`log_id`, `user_id`, `actions`, `date`) VALUES
-(1, 55, 'Added User Record with ID No.  57', '2025-05-23 12:04:52');
+(1, 55, 'Added User Record with ID No.  57', '2025-05-23 12:04:52'),
+(2, 55, 'Added User Record with ID No.  1', '2025-05-23 20:08:17'),
+(3, 55, 'Deleted Order Record with ID No. 6', '2025-05-23 20:24:31');
 
 -- --------------------------------------------------------
 
@@ -85,8 +87,7 @@ CREATE TABLE `tbl_order` (
 --
 
 INSERT INTO `tbl_order` (`orderID`, `user_id`, `customer`, `address`, `phone`, `orderStats`, `orderDate`) VALUES
-(4, 56, 'sdfds', 'fsdfsd', '09123456789', 'Approved', '2025-05-22'),
-(6, 56, 'asd', 'sss', '09152365111', 'Pending', '2025-05-22');
+(4, 56, 'sdfds', 'fsdfsd', '09123456789', 'Approved', '2025-05-22');
 
 -- --------------------------------------------------------
 
@@ -107,8 +108,7 @@ CREATE TABLE `tbl_order_items` (
 --
 
 INSERT INTO `tbl_order_items` (`itemOrderID`, `orderID`, `itemID`, `orderQuan`, `itemPrice`) VALUES
-(4, 4, 1005, 4, 10),
-(6, 6, 1005, 3, 10);
+(4, 4, 1005, 4, 10);
 
 -- --------------------------------------------------------
 
@@ -159,8 +159,8 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`user_id`, `user_Fname`, `user_Mname`, `user_Lname`, `user_email`, `user_phone`, `user_username`, `user_pass`, `user_type`, `user_stats`, `user_image`, `force_reset`) VALUES
 (55, 'test', 'test', 'test', 'test@gmail.com', '09123456789', 'test', 'osltUY8QmaO2r+KeRDNA+fX98SiYU/wDSQhETyvLiYI=', 'Admin', 'Active', '', 0),
-(56, 'test', 'test', 'test1', 'test1@gmail.com', '09321654987', 'test1', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'User', 'Active', '', 0),
-(57, 'test', 'test', 'test', 'testtest2@gmail.com', '09123654789', 'test2', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Active', 'src/userimage/Screenshot 2025-05-10 113726.png', 0);
+(56, 'test', 'test', 'test2223', 'test1@gmail.com', '09321654987', 'test1', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'User', 'Active', '', 0),
+(57, 'test', 'test', 'testaoa', 'testtest2@gmail.com', '09123654789', 'test2', 'NyaDNd1pMQRb3N+SYj/4GaZCRLU9DnRtQ4eXNJ1NpXg=', 'Admin', 'Active', '', 0);
 
 --
 -- Indexes for dumped tables
@@ -220,7 +220,7 @@ ALTER TABLE `tbl_item`
 -- AUTO_INCREMENT for table `tbl_logs`
 --
 ALTER TABLE `tbl_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_order`

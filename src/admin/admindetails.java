@@ -834,6 +834,7 @@ public class admindetails extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid Email!");
             return;
         }
+        
         session ss = session.getInstance();
         String sql = "UPDATE tbl_user SET user_Fname = '" + fn.getText() + "', user_Mname = '" + mn.getText() + "', " +
                                 "user_Lname = '" + ln.getText() + "', user_email = '" + email.getText() + "', user_phone = '" + phone.getText() + "', " +
@@ -887,7 +888,7 @@ public class admindetails extends javax.swing.JFrame {
         }
 
         
-        adminDashboard1 log = new adminDashboard1();
+        order log = new order();
         log.setVisible(true);
         this.dispose();
     

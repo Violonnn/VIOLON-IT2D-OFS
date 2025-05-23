@@ -26,12 +26,12 @@ import net.proteanit.sql.DbUtils;
  *
  * @author Admin
  */
-public class userList1 extends javax.swing.JFrame {
+public class systemLog extends javax.swing.JFrame {
 
     /**
      * Creates new form adminDashboard1
      */
-    public userList1() {
+    public systemLog() {
         initComponents();
         
         displayData();
@@ -75,22 +75,36 @@ public class userList1 extends javax.swing.JFrame {
     return image;
 }
     
-    public void displayData() {
+   public void displayData() {
     try {
         dbConnector dbc = new dbConnector();
-        session ss = session.getInstance();        
-        int loggedInUserId = ss.getUid(); 
 
-       
-        String sql = "SELECT user_id, user_Fname, user_Mname, user_Lname, user_email, user_phone, user_type, user_stats FROM tbl_user WHERE user_id != '" + loggedInUserId + "'";
+        String sql = "SELECT " +
+                     "l.log_id AS 'Log ID', " +
+                     "CONCAT(u.user_Fname, ' ', u.user_Mname, ' ', u.user_Lname) AS 'User Name', " +
+                     "l.actions AS 'Action', " +
+                     "l.date AS 'Date' " +
+                     "FROM tbl_logs l " +
+                     "JOIN tbl_user u ON l.user_id = u.user_id " +
+                     "ORDER BY l.date DESC";
+
         ResultSet rs = dbc.getData(sql);
+        logsTable.setModel(DbUtils.resultSetToTableModel(rs));  
+// <- logsTable = your JTable component
 
-        usersTable.setModel(DbUtils.resultSetToTableModel(rs));
+        logsTable.getColumnModel().getColumn(0).setPreferredWidth(30);   // Log ID
+        logsTable.getColumnModel().getColumn(1).setPreferredWidth(150);  // User Name
+        logsTable.getColumnModel().getColumn(2).setPreferredWidth(300);  // Action
+        logsTable.getColumnModel().getColumn(3).setPreferredWidth(150);  // Date
+
         rs.close();
+        
     } catch (SQLException ex) {
-        System.out.println("Error: " + ex.getMessage());
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Failed to load logs: " + ex.getMessage());
     }
 }
+
     //ohyeah
 
     /**
@@ -107,12 +121,7 @@ public class userList1 extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         order2 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
         email1 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         mana = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -125,7 +134,7 @@ public class userList1 extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        usersTable = new javax.swing.JTable();
+        logsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -155,59 +164,12 @@ public class userList1 extends javax.swing.JFrame {
         order2.setAlignmentY(10.0F);
         jPanel3.add(order2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 30, 30));
 
-        jPanel10.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel10.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel10MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel10MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel10MouseExited(evt);
-            }
-        });
-        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel15.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("+   Add User");
-        jPanel10.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 3, -1, -1));
-
-        jPanel3.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 20));
-
         email1.setFont(new java.awt.Font("Gorlock", 1, 8)); // NOI18N
         email1.setForeground(new java.awt.Color(204, 204, 204));
         email1.setText("UID: ");
-        jPanel3.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 110, -1));
+        jPanel3.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 110, -1));
 
-        jPanel9.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel9MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel9MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel9MouseExited(evt);
-            }
-        });
-        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel13.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("=   Edit User");
-        jPanel9.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 3, -1, -1));
-
-        jPanel3.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 180, 20));
-
-        jLabel14.setFont(new java.awt.Font("Gorlock", 1, 10)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("User Configuration");
-        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, 20));
-
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 460));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 530));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -215,7 +177,7 @@ public class userList1 extends javax.swing.JFrame {
 
         mana.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/manager.png"))); // NOI18N
         mana.setAlignmentY(10.0F);
-        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 5, 30, 30));
+        jPanel1.add(mana, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 5, 30, 30));
 
         jLabel1.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
@@ -231,12 +193,12 @@ public class userList1 extends javax.swing.JFrame {
                 jLabel1MouseExited(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 11, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 11, 30, -1));
 
         jLabel3.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setText("/");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 10, 180, -1));
 
         jLabel5.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
@@ -250,14 +212,14 @@ public class userList1 extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Users List");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 11, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 11, 200, -1));
 
         jLabel8.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Admin Dashboard");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 11, -1, -1));
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 580, 40));
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 1030, 40));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
@@ -269,12 +231,12 @@ public class userList1 extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Gorlock", 1, 11)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("Dashboard / Home / Users List");
+        jLabel11.setText("Dashboard / Home / System Log");
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 580, 30));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 1030, 30));
 
-        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+        logsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -285,21 +247,21 @@ public class userList1 extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(usersTable);
+        jScrollPane1.setViewportView(logsTable);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 580, 350));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 1030, 420));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 783, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1235, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 450, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -328,91 +290,6 @@ public class userList1 extends javax.swing.JFrame {
          
     }//GEN-LAST:event_formWindowActivated
 
-    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-      
-        adminRegi reg = new adminRegi();     
-        int rowIndex = usersTable.getSelectedRow();
-        reg.pass1.setEnabled(false);
-        reg.pass2.setEnabled(false);
-       if(rowIndex < 0){
-           JOptionPane.showMessageDialog(null,"Please Select an Item!");
-       } else {
-          
-           try{
-                 
-               dbConnector db = new dbConnector();
-               TableModel tbl = usersTable.getModel();
-               ResultSet rs = db.getData("SELECT * FROM tbl_user WHERE user_id ='"+tbl.getValueAt(rowIndex,0)+"'");
-               if(rs.next()){
-                    
-               reg.prof.setText("User Configuration");
-               reg.uid.setText(""+rs.getString("user_id"));
-               reg.ln.setText(""+rs.getString("user_Lname"));
-               reg.mn.setText(""+rs.getString("user_Mname"));
-               reg.fn.setText(""+rs.getString("user_Fname"));
-               reg.username.setText(""+rs.getString("user_username"));
-               reg.type.setSelectedItem(""+rs.getString("user_type"));
-               reg.stats.setSelectedItem(""+rs.getString("user_stats"));
-               reg.email.setText(""+rs.getString("user_email"));
-               reg.phone.setText(""+rs.getString("user_phone"));
-               reg.image.setIcon(reg.ResizeImage(rs.getString("user_image"), null, reg.image));
-               reg.oldpath = rs.getString("user_image");
-               reg.path = rs.getString("user_image");
-               reg.destination = rs.getString("user_image");
-               reg.add.setEnabled(false);
-               reg.upd.setEnabled(true);
-               reg.setVisible(true);
-               
-               if(rs.getString("user_image").isEmpty()){
-                   reg.select.setEnabled(true);
-                   reg.remove.setEnabled(false);
-               } else {
-                   reg.select.setEnabled(false);
-                   reg.remove.setEnabled(true);
-               }
-               
-               
-               
-               this.dispose();
-               } else {
-                   JOptionPane.showMessageDialog(null, "Connection Error!");
-               }
-               
-           }catch(SQLException ex){
-               System.out.println(""+ex);
-           }
-       }
-       
-    }//GEN-LAST:event_jPanel9MouseClicked
-
-    private void jPanel9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseEntered
-        jPanel9.setBackground(new Color(102,102,102));
-    }//GEN-LAST:event_jPanel9MouseEntered
-
-    private void jPanel9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseExited
-        jPanel9.setBackground(new Color(51,51,51));
-    }//GEN-LAST:event_jPanel9MouseExited
-
-    private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
-        adminRegi reg = new adminRegi();
-        reg.setVisible(true);
-        reg.remove.setEnabled(false);
-        reg.select.setEnabled(true);
-        reg.pass1.setEnabled(true);
-        reg.pass2.setEnabled(true);
-        reg.changePass.setVisible(false);
-        reg.newpas.setText("Password");
-        this.dispose();
-    }//GEN-LAST:event_jPanel10MouseClicked
-
-    private void jPanel10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseEntered
-        jPanel10.setBackground(new Color(102,102,102));
-    }//GEN-LAST:event_jPanel10MouseEntered
-
-    private void jPanel10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseExited
-        jPanel10.setBackground(new Color(51,51,51));
-    }//GEN-LAST:event_jPanel10MouseExited
-
     /**
      * @param args the command line arguments
      */
@@ -430,21 +307,23 @@ public class userList1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(userList1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(systemLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(userList1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(systemLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(userList1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(systemLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(userList1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(systemLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userList1().setVisible(true);
+                new systemLog().setVisible(true);
             }
         });
     }
@@ -453,9 +332,6 @@ public class userList1 extends javax.swing.JFrame {
     private javax.swing.JLabel email1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -463,16 +339,14 @@ public class userList1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable logsTable;
     private javax.swing.JLabel mana;
     private javax.swing.JLabel menu;
     private javax.swing.JLabel order2;
-    private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,12 +5,16 @@
  */
 package admin;
 
+import com.mysql.jdbc.Statement;
 import config.dbConnector;
 import config.session;
 import java.awt.Color;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import javaapplication8.login;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -381,46 +385,65 @@ public class approvePen extends javax.swing.JFrame {
     }
 
     try {
-        dbConnector dbc = new dbConnector();
+    dbConnector dbc = new dbConnector();
+    Connection conn = dbc.getConnection();
 
-        // Get the selected order ID
-        String orderId = usersTable.getValueAt(selectedRow, usersTable.getColumn("Order ID").getModelIndex()).toString();
+    // Get the selected order ID
+    String orderId = usersTable.getValueAt(selectedRow, usersTable.getColumn("Order ID").getModelIndex()).toString();
 
-        // Step 1: Get all items in this order to return the stock
-        String fetchItemsSql = "SELECT itemID, orderQuan FROM tbl_order_items WHERE orderID = '" + orderId + "'";
-        ResultSet rs = dbc.getData(fetchItemsSql);
+    // Step 1: Get all items in this order to return the stock
+    String fetchItemsSql = "SELECT itemID, orderQuan FROM tbl_order_items WHERE orderID = ?";
+    PreparedStatement psFetch = conn.prepareStatement(fetchItemsSql);
+    psFetch.setString(1, orderId);
+    ResultSet rs = psFetch.executeQuery();
 
-        while (rs.next()) {
-            int itemID = rs.getInt("itemID");
-            int orderQuan = rs.getInt("orderQuan");
+    // Step 2: Return stock for each item
+    String updateStockSql = "UPDATE tbl_item SET itemQuan = itemQuan + ? WHERE itemID = ?";
+    PreparedStatement psUpdateStock = conn.prepareStatement(updateStockSql);
 
-            // Return stock
-            String updateStockSql = "UPDATE tbl_item SET itemQuan = itemQuan + " + orderQuan + " WHERE itemID = '" + itemID + "'";
-            dbc.updateData(updateStockSql);
-        }
+    while (rs.next()) {
+        int itemID = rs.getInt("itemID");
+        int orderQuan = rs.getInt("orderQuan");
 
-        rs.close();
-
-        // Step 2: Delete order items
-        String deleteOrderItemsSql = "DELETE FROM tbl_order_items WHERE orderID = '" + orderId + "'";
-        dbc.updateData(deleteOrderItemsSql);
-
-        // Step 3: Delete the order itself
-        String deleteOrderSql = "DELETE FROM tbl_order WHERE orderID = '" + orderId + "'";
-        dbc.updateData(deleteOrderSql);
-
-        JOptionPane.showMessageDialog(this, "Order successfully deleted and stock returned.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-        
-        displayData();
-        usersTable.revalidate();
-        usersTable.repaint();
-
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error deleting order: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
+        psUpdateStock.setInt(1, orderQuan);
+        psUpdateStock.setInt(2, itemID);
+        psUpdateStock.executeUpdate();
     }
-    
+    rs.close();
+    psFetch.close();
+    psUpdateStock.close();
+
+    // Step 3: Delete order items
+    String deleteOrderItemsSql = "DELETE FROM tbl_order_items WHERE orderID = ?";
+    PreparedStatement psDeleteItems = conn.prepareStatement(deleteOrderItemsSql);
+    psDeleteItems.setString(1, orderId);
+    psDeleteItems.executeUpdate();
+    psDeleteItems.close();
+
+    // Step 4: Delete the order itself
+    String deleteOrderSql = "DELETE FROM tbl_order WHERE orderID = ?";
+    PreparedStatement psDeleteOrder = conn.prepareStatement(deleteOrderSql);
+    psDeleteOrder.setString(1, orderId);
+    psDeleteOrder.executeUpdate();
+    psDeleteOrder.close();
+
+    // Step 5: Log the deletion in tbl_logs
+    session ss = session.getInstance();
+    String action = "Deleted Order Record with ID No. " + orderId;
+    dbc.insertData("INSERT INTO tbl_logs (user_id, actions, date) VALUES ('" + ss.getUid() + "', '" + action + "', '" + LocalDateTime.now() + "')");
+
+    JOptionPane.showMessageDialog(this, "Order successfully deleted and stock returned.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+    displayData();
+    usersTable.revalidate();
+    usersTable.repaint();
+
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "Error deleting order: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    ex.printStackTrace();
+}
+
+
     }//GEN-LAST:event_cancelActionPerformed
 
     private void approveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveActionPerformed
@@ -440,7 +463,7 @@ public class approvePen extends javax.swing.JFrame {
     }//GEN-LAST:event_approveActionPerformed
 
     private void approve1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approve1ActionPerformed
-        int selectedRow = usersTable.getSelectedRow();
+      int selectedRow = usersTable.getSelectedRow();
 
     if (selectedRow == -1) {
         JOptionPane.showMessageDialog(null, "Please select an order to approve.");
@@ -461,14 +484,35 @@ public class approvePen extends javax.swing.JFrame {
 
         if (confirm == JOptionPane.YES_OPTION) {
             dbConnector dbc = new dbConnector();
-            String sql = "UPDATE tbl_order SET orderStats = 'Approved' WHERE orderID = " + orderID;
-            dbc.updateData(sql);
-       
+            Connection conn = dbc.getConnection();
+
+            String sql = "UPDATE tbl_order SET orderStats = ? WHERE orderID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, "Approved");
+            pstmt.setInt(2, orderID);
+
+            int rowsUpdated = pstmt.executeUpdate();
             
+             ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            int generatedId = 1;
+            if(generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            }
+            
+            session ss = session.getInstance();
+            dbConnector db = new dbConnector();
+            String action = "Approved Order Record with ID No.  "+generatedId;
+            db.insertData("INSERT INTO tbl_logs (user_id, actions, date) VALUE ('"+ss.getUid()+"','"+action+"','"+LocalDateTime.now()+"')");
+
+
+            if (rowsUpdated > 0) {
                 JOptionPane.showMessageDialog(null, "Order approved successfully!");
                 displayData(); // Refresh the table after approval
-                  usersTable.revalidate();
-                  usersTable.repaint();
+                usersTable.revalidate();
+                usersTable.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "No rows updated. Please try again.");
+            }
         }
 
     } catch (Exception ex) {
